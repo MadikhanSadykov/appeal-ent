@@ -1,7 +1,9 @@
 package kz.testcenter.app.appealent.dao.impl;
 
 import kz.testcenter.app.appealent.dao.AppealDAO;
+import kz.testcenter.app.appealent.model.functions.request.AppealByIDRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealListRequest;
+import kz.testcenter.app.appealent.model.functions.response.AppealByIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -18,7 +20,9 @@ import java.util.List;
 import java.util.Map;
 
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.*;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_BY_ID_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_LIST_FUNCTION;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_BY_ID_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_LIST_FUNCTION;
 
 @Component
@@ -69,11 +73,37 @@ public class AppealDAOImpl implements AppealDAO {
             for (int numOfColumn = 0; numOfColumn < NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_LIST_FUNCTION; numOfColumn++) {
                 fieldNumberOfAppealListResponseMap.put(numOfColumn, tableRow[numOfColumn]);
             }
-
             appealListResponses.add(AppealListResponse.build(fieldNumberOfAppealListResponseMap));
         }
-
         return appealListResponses;
     }
 
+    @Override
+    public List<AppealByIDResponse> getAppealByIdFun(AppealByIDRequest appealByIDRequest) {
+        StoredProcedureQuery query = entityManager
+                .createStoredProcedureQuery(GET_APPEAL_BY_ID_FUNCTION)
+                .registerStoredProcedureParameter(IN_APPEAL_ID_FIELD, Integer.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_APPEAL_TYPE_ID_FIELD, Short.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_TEST_SERVER_ID_FIELD, Short.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_CRYPT_KEY_FIELD, String.class, ParameterMode.IN)
+
+                .setParameter(IN_APPEAL_ID_FIELD, appealByIDRequest.getAppealId())
+                .setParameter(IN_APPEAL_TYPE_ID_FIELD, appealByIDRequest.getAppealTypeId())
+                .setParameter(IN_TEST_SERVER_ID_FIELD, appealByIDRequest.getTestServerId())
+                .setParameter(IN_CRYPT_KEY_FIELD, appealByIDRequest.getCryptKey());
+
+        query.execute();
+        List<Object[]> queryResultTable = query.getResultList();
+
+        List<AppealByIDResponse> appealByIDResponses = new ArrayList<>();
+        for (Object[] tableRow : queryResultTable) {
+            Map<Integer, Object> fieldNumberOfAppealByIdResponseMap = new HashMap<>();
+
+            for (int numOfColumn = 0; numOfColumn < NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_BY_ID_FUNCTION; numOfColumn++) {
+                fieldNumberOfAppealByIdResponseMap.put(numOfColumn, tableRow[numOfColumn]);
+            }
+            appealByIDResponses.add(AppealByIDResponse.build(fieldNumberOfAppealByIdResponseMap));
+        }
+        return appealByIDResponses;
+    }
 }

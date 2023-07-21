@@ -3,7 +3,9 @@ package kz.testcenter.app.appealent.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import kz.testcenter.app.appealent.model.functions.request.AppealByIDRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealListRequest;
+import kz.testcenter.app.appealent.model.functions.response.AppealByIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealListResponse;
 import kz.testcenter.app.appealent.service.AppealService;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +25,8 @@ public class AppealController {
 
     private final AppealService appealService;
 
-    @Operation(summary = "Получить список Аппеляций",
-            description = "Обязательные поля: 'test_type_id', 'start_date', 'end_date'. \n" +
+    @Operation(summary = "Получить список Аппеляций", description = "Обязательные поля: 'test_type_id', " +
+                    "'start_date', 'end_date'.\n" +
                     "! Если остальные поля не назначены, то передать в них - null !\n" +
                     "Возвращает лист аппеляций\n")
     @ApiResponses(value = {
@@ -35,6 +37,15 @@ public class AppealController {
     @GetMapping("/list")
     public ResponseEntity<List<AppealListResponse>> getAppealList(@RequestBody AppealListRequest appealListRequest) {
         return new ResponseEntity<>(appealService.getAppealList(appealListRequest), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Получить вопрос аппеляции по id", description = "Обязательные поля: 'appeal_id', " +
+                    "'appeal_type_id', 'end_date'.\n" +
+                    "! Если остальные поля не назначены, то передать в них - null !\n" +
+                    "Возвращает таблицу вопросов аппеляции\n")
+    @GetMapping("/by/id")
+    public ResponseEntity<List<AppealByIDResponse>> getAppealById(@RequestBody AppealByIDRequest appealByIDRequest) {
+        return new ResponseEntity<>(appealService.getAppealById(appealByIDRequest),  HttpStatus.OK);
     }
 
 }
