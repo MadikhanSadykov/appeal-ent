@@ -5,13 +5,14 @@ import kz.testcenter.app.appealent.model.functions.request.AppealByIDRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealListRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealResultDescriptionFileRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealResultDescriptionListByQuestionIDRequest;
+import kz.testcenter.app.appealent.model.functions.request.AppealStatisticByQuestionRequest;
 import kz.testcenter.app.appealent.model.functions.response.AppealByIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealListResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionFileByIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionFileResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionListByQuestionIDResponse;
+import kz.testcenter.app.appealent.model.functions.response.AppealStatisticByQuestionResponse;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.type.BigIntegerType;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
@@ -19,8 +20,6 @@ import javax.persistence.ParameterMode;
 import javax.persistence.StoredProcedureQuery;
 import javax.transaction.Transactional;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,11 +32,13 @@ import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_RESULT_DESCRIPTION_FILE_BY_FILE_ID_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_RESULT_DESCRIPTION_FILE_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_RESULT_DESCRIPTION_LIST_BY_QUESTION_ID_FUNCTION;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_STATISTIC_BY_QUESTION_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_BY_ID_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_LIST_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_RESULT_DESCRIPTION_FILE_BY_FILE_ID_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_RESULT_DESCRIPTION_FILE_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_RESULT_DESCRIPTION_LIST_BY_QUESTION_ID_FUNCTION;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_STATISTIC_BY_QUESTION_FUNCTION;
 
 @Component
 @RequiredArgsConstructor
@@ -210,5 +211,37 @@ public class AppealDAOImpl implements AppealDAO {
                             .build(fieldNumberOfAppealResultDescriptionListByQuestionIDResponseMap));
         }
         return appealResultDescriptionListByQuestionIDResponses;
+    }
+
+    @Override
+    public List<AppealStatisticByQuestionResponse> getAppealStatisticByQuestionFun(
+            AppealStatisticByQuestionRequest appealStatisticByQuestionRequest) {
+
+        StoredProcedureQuery query = entityManager
+                .createStoredProcedureQuery(GET_APPEAL_STATISTIC_BY_QUESTION_FUNCTION)
+                .registerStoredProcedureParameter(IN_TEST_TYPE_ID_FIELD, Short.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_START_DATE_FILED, Date.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_FINISH_DATE_FILED, Date.class, ParameterMode.IN)
+
+                .setParameter(IN_TEST_TYPE_ID_FIELD, appealStatisticByQuestionRequest.getTestTypeId())
+                .setParameter(IN_START_DATE_FILED, appealStatisticByQuestionRequest.getStartDate())
+                .setParameter(IN_FINISH_DATE_FILED, appealStatisticByQuestionRequest.getFinishDate());
+
+        query.execute();
+        List<Object[]> queryResultTable = query.getResultList();
+        List<AppealStatisticByQuestionResponse> appealStatisticByQuestionResponses = new ArrayList<>();
+
+        for (Object[] tableRow : queryResultTable) {
+            Map<Integer, Object> fieldNumberOfAppealStatisticByQuestionResponseMap = new HashMap<>();
+            for (int numOfColumn = 0;
+                 numOfColumn < NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_STATISTIC_BY_QUESTION_FUNCTION;
+                 numOfColumn++) {
+                fieldNumberOfAppealStatisticByQuestionResponseMap.put(numOfColumn + 1, tableRow[numOfColumn]);
+            }
+            appealStatisticByQuestionResponses
+                    .add(AppealStatisticByQuestionResponse
+                            .build(fieldNumberOfAppealStatisticByQuestionResponseMap));
+        }
+        return appealStatisticByQuestionResponses;
     }
 }

@@ -8,11 +8,13 @@ import kz.testcenter.app.appealent.model.functions.request.AppealByIDRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealListRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealResultDescriptionFileRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealResultDescriptionListByQuestionIDRequest;
+import kz.testcenter.app.appealent.model.functions.request.AppealStatisticByQuestionRequest;
 import kz.testcenter.app.appealent.model.functions.response.AppealByIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealListResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionFileByIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionFileResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionListByQuestionIDResponse;
+import kz.testcenter.app.appealent.model.functions.response.AppealStatisticByQuestionResponse;
 import kz.testcenter.app.appealent.service.AppealService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -89,6 +91,17 @@ public class AppealController {
             @RequestBody AppealResultDescriptionListByQuestionIDRequest resultDescriptionListByQuestionIDRequest) {
         return new ResponseEntity<>(
                 appealService.getAppealResultDescriptionListByQuestionId(resultDescriptionListByQuestionIDRequest),
+                HttpStatus.OK
+        );
+    }
+
+    @Operation(summary = "Получить статистику аппеляций по вопросам",
+            description = "Обязательны все поля")
+    @GetMapping("/statistic/by/question")
+    public ResponseEntity<List<AppealStatisticByQuestionResponse>> getAppealStatisticByQuestion(
+            @RequestBody AppealStatisticByQuestionRequest appealStatisticByQuestionRequest) {
+        return new ResponseEntity<>(
+                appealService.getAppealStatisticByQuestion(appealStatisticByQuestionRequest),
                 HttpStatus.OK
         );
     }

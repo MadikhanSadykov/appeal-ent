@@ -4,11 +4,13 @@ import kz.testcenter.app.appealent.model.functions.request.AppealByIDRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealListRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealResultDescriptionFileRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealResultDescriptionListByQuestionIDRequest;
+import kz.testcenter.app.appealent.model.functions.request.AppealStatisticByQuestionRequest;
 import kz.testcenter.app.appealent.model.functions.response.AppealByIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealListResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionFileByIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionFileResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionListByQuestionIDResponse;
+import kz.testcenter.app.appealent.model.functions.response.AppealStatisticByQuestionResponse;
 
 import java.util.List;
 
@@ -24,5 +26,8 @@ public interface AppealDAO {
 
     List<AppealResultDescriptionListByQuestionIDResponse> getAppealResultDescriptionListByQuestionIdFun(
             AppealResultDescriptionListByQuestionIDRequest request);
+
+    List<AppealStatisticByQuestionResponse> getAppealStatisticByQuestionFun(
+            AppealStatisticByQuestionRequest appealStatisticByQuestionRequest);
 
 }

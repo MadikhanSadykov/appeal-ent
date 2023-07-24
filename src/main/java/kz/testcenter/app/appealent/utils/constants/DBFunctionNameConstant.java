@@ -9,4 +9,5 @@ public class DBFunctionNameConstant {
             "public.fn_get_appeal_result_description_file_by_file_id";
     public static final String GET_APPEAL_RESULT_DESCRIPTION_LIST_BY_QUESTION_ID_FUNCTION =
             "public.fn_get_appeal_result_description_list_by_question_id";
+    public static final String GET_APPEAL_STATISTIC_BY_QUESTION_FUNCTION = "public.fn_get_appeal_statistic_by_question";
 }
