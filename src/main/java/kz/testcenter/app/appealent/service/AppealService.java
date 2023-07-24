@@ -6,6 +6,7 @@ import kz.testcenter.app.appealent.model.functions.request.AppealResultDescripti
 import kz.testcenter.app.appealent.model.functions.request.AppealResultDescriptionListByQuestionIDRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealStatisticByQuestionIDRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealStatisticByQuestionRequest;
+import kz.testcenter.app.appealent.model.functions.request.AppealUploadFileRequest;
 import kz.testcenter.app.appealent.model.functions.response.AppealByIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealListResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionFileByIDResponse;
@@ -13,6 +14,7 @@ import kz.testcenter.app.appealent.model.functions.response.AppealResultDescript
 import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionListByQuestionIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealStatisticByQuestionIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealStatisticByQuestionResponse;
+import kz.testcenter.app.appealent.model.functions.response.AppealUploadFileResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,5 +39,7 @@ public interface AppealService {
 
     List<AppealStatisticByQuestionIDResponse> getAppealStatisticByQuestionID(
             AppealStatisticByQuestionIDRequest request);
+
+    List<AppealUploadFileResponse> getAppealUploadFile(AppealUploadFileRequest appealUploadFileRequest);
 
 }

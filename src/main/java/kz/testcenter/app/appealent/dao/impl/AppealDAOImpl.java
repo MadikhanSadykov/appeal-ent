@@ -7,6 +7,7 @@ import kz.testcenter.app.appealent.model.functions.request.AppealResultDescripti
 import kz.testcenter.app.appealent.model.functions.request.AppealResultDescriptionListByQuestionIDRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealStatisticByQuestionIDRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealStatisticByQuestionRequest;
+import kz.testcenter.app.appealent.model.functions.request.AppealUploadFileRequest;
 import kz.testcenter.app.appealent.model.functions.response.AppealByIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealListResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionFileByIDResponse;
@@ -14,6 +15,7 @@ import kz.testcenter.app.appealent.model.functions.response.AppealResultDescript
 import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionListByQuestionIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealStatisticByQuestionIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealStatisticByQuestionResponse;
+import kz.testcenter.app.appealent.model.functions.response.AppealUploadFileResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -53,6 +55,7 @@ import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_RESULT_DESCRIPTION_LIST_BY_QUESTION_ID_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_STATISTIC_BY_QUESTION_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_STATISTIC_BY_QUESTION_ID_FUNCTION;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_UPLOAD_FILE_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_BY_ID_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_LIST_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_RESULT_DESCRIPTION_FILE_BY_FILE_ID_FUNCTION;
@@ -60,6 +63,7 @@ import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFiel
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_RESULT_DESCRIPTION_LIST_BY_QUESTION_ID_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_STATISTIC_BY_QUESTION_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_STATISTIC_BY_QUESTION_ID_FUNCTION;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_UPLOAD_FILE_FUNCTION;
 
 @Component
 @RequiredArgsConstructor
@@ -294,6 +298,38 @@ public class AppealDAOImpl implements AppealDAO {
             appealStatisticByQuestionIDResponses
                     .add(AppealStatisticByQuestionIDResponse
                             .build(fieldNumberOfAppealStatisticByQuestionIDResponseMap));
+        }
+        return appealStatisticByQuestionIDResponses;
+    }
+
+    @Override
+    public List<AppealUploadFileResponse> getAppealUploadFileResponseFun(
+            AppealUploadFileRequest appealUploadFileRequest) {
+
+        StoredProcedureQuery query = entityManager
+                .createStoredProcedureQuery(GET_APPEAL_UPLOAD_FILE_FUNCTION)
+                .registerStoredProcedureParameter(IN_APPEAL_ID_FIELD, Integer.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_APPEAL_TYPE_ID_FIELD, Short.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_TEST_SERVER_ID_FIELD, Short.class, ParameterMode.IN)
+
+                .setParameter(IN_APPEAL_ID_FIELD, appealUploadFileRequest.getAppealId())
+                .setParameter(IN_APPEAL_TYPE_ID_FIELD, appealUploadFileRequest.getAppealTypeId())
+                .setParameter(IN_TEST_SERVER_ID_FIELD, appealUploadFileRequest.getTestServerId());
+
+        query.execute();
+        List<Object[]> queryResultTable = query.getResultList();
+        List<AppealUploadFileResponse> appealStatisticByQuestionIDResponses = new ArrayList<>();
+
+        for (Object[] tableRow : queryResultTable) {
+            Map<Integer, Object> fieldNumberOfAppealUploadFileResponseMap = new HashMap<>();
+            for (int numOfColumn = 0;
+                 numOfColumn < NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_UPLOAD_FILE_FUNCTION;
+                 numOfColumn++) {
+                fieldNumberOfAppealUploadFileResponseMap.put(numOfColumn + 1, tableRow[numOfColumn]);
+            }
+            appealStatisticByQuestionIDResponses
+                    .add(AppealUploadFileResponse
+                            .build(fieldNumberOfAppealUploadFileResponseMap));
         }
         return appealStatisticByQuestionIDResponses;
     }

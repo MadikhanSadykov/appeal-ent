@@ -13,4 +13,5 @@ public class DBFunctionNameConstant {
     public static final String GET_APPEAL_STATISTIC_BY_QUESTION_FUNCTION = "public.fn_get_appeal_statistic_by_question";
     public static final String GET_APPEAL_STATISTIC_BY_QUESTION_ID_FUNCTION =
             "public.fn_get_appeal_statistic_by_question_id";
+    public static final String GET_APPEAL_UPLOAD_FILE_FUNCTION = "public.fn_get_appeal_upload_file";
 }

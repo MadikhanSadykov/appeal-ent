@@ -7,6 +7,7 @@ import kz.testcenter.app.appealent.model.functions.request.AppealResultDescripti
 import kz.testcenter.app.appealent.model.functions.request.AppealResultDescriptionListByQuestionIDRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealStatisticByQuestionIDRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealStatisticByQuestionRequest;
+import kz.testcenter.app.appealent.model.functions.request.AppealUploadFileRequest;
 import kz.testcenter.app.appealent.model.functions.response.AppealByIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealListResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionFileByIDResponse;
@@ -14,6 +15,7 @@ import kz.testcenter.app.appealent.model.functions.response.AppealResultDescript
 import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionListByQuestionIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealStatisticByQuestionIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealStatisticByQuestionResponse;
+import kz.testcenter.app.appealent.model.functions.response.AppealUploadFileResponse;
 import kz.testcenter.app.appealent.service.AppealService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -65,4 +67,8 @@ public class AppealServiceImpl implements AppealService {
         return appealDAO.getAppealStatisticByQuestionIdFun(appealStatisticByQuestionIDRequest);
     }
 
+    @Override
+    public List<AppealUploadFileResponse> getAppealUploadFile(AppealUploadFileRequest appealUploadFileRequest) {
+        return appealDAO.getAppealUploadFileResponseFun(appealUploadFileRequest);
+    }
 }
