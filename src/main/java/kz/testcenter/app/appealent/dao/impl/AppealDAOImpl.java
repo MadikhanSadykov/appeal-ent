@@ -3,13 +3,15 @@ package kz.testcenter.app.appealent.dao.impl;
 import kz.testcenter.app.appealent.dao.AppealDAO;
 import kz.testcenter.app.appealent.model.functions.request.AppealByIDRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealListRequest;
-import kz.testcenter.app.appealent.model.functions.request.AppealResultDescriptionFileByIDRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealResultDescriptionFileRequest;
+import kz.testcenter.app.appealent.model.functions.request.AppealResultDescriptionListByQuestionIDRequest;
 import kz.testcenter.app.appealent.model.functions.response.AppealByIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealListResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionFileByIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionFileResponse;
+import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionListByQuestionIDResponse;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.type.BigIntegerType;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
@@ -17,6 +19,8 @@ import javax.persistence.ParameterMode;
 import javax.persistence.StoredProcedureQuery;
 import javax.transaction.Transactional;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,10 +32,12 @@ import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_LIST_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_RESULT_DESCRIPTION_FILE_BY_FILE_ID_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_RESULT_DESCRIPTION_FILE_FUNCTION;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_RESULT_DESCRIPTION_LIST_BY_QUESTION_ID_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_BY_ID_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_LIST_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_RESULT_DESCRIPTION_FILE_BY_FILE_ID_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_RESULT_DESCRIPTION_FILE_FUNCTION;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_RESULT_DESCRIPTION_LIST_BY_QUESTION_ID_FUNCTION;
 
 @Component
 @RequiredArgsConstructor
@@ -151,13 +157,13 @@ public class AppealDAOImpl implements AppealDAO {
     }
 
     @Override
-    public AppealResultDescriptionFileByIDResponse getAppealResultDescriptionFileByIDFun(Integer id) {
+    public AppealResultDescriptionFileByIDResponse getAppealResultDescriptionFileByIdFun(Integer id) {
 
         StoredProcedureQuery query = entityManager
                 .createStoredProcedureQuery(GET_APPEAL_RESULT_DESCRIPTION_FILE_BY_FILE_ID_FUNCTION)
-                .registerStoredProcedureParameter(IN_FILE_ID, Integer.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_FILE_ID_FIELD, Integer.class, ParameterMode.IN)
 
-                .setParameter(IN_FILE_ID, id);
+                .setParameter(IN_FILE_ID_FIELD, id);
 
         query.execute();
         List<Object[]> queryResulTable = query.getResultList();
@@ -170,5 +176,39 @@ public class AppealDAOImpl implements AppealDAO {
         }
         return AppealResultDescriptionFileByIDResponse
                 .build(fieldNumberOfAppealResultDescriptionFileByIDMap);
+    }
+
+    @Override
+    public List<AppealResultDescriptionListByQuestionIDResponse> getAppealResultDescriptionListByQuestionIdFun(
+            AppealResultDescriptionListByQuestionIDRequest request) {
+        StoredProcedureQuery query = entityManager
+                .createStoredProcedureQuery(GET_APPEAL_RESULT_DESCRIPTION_LIST_BY_QUESTION_ID_FUNCTION)
+                .registerStoredProcedureParameter(IN_APPEAL_TYPE_ID_FIELD, Short.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_TEST_SERVER_ID_FIELD, Short.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_EXPERT_ID_FIELD, Integer.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_ORIGINAL_QUESTION_ID_FIELD, Long.class, ParameterMode.IN)
+
+                .setParameter(IN_APPEAL_TYPE_ID_FIELD, request.getAppealTypeId())
+                .setParameter(IN_TEST_SERVER_ID_FIELD, request.getTestServerId())
+                .setParameter(IN_EXPERT_ID_FIELD, request.getExpertId())
+                .setParameter(IN_ORIGINAL_QUESTION_ID_FIELD, request.getOriginalQuestionId());
+
+        query.execute();
+        List<Object[]> queryResultTable = query.getResultList();
+        List<AppealResultDescriptionListByQuestionIDResponse> appealResultDescriptionListByQuestionIDResponses =
+                new ArrayList<>();
+
+        for (Object[] tableRow : queryResultTable) {
+            Map<Integer, Object> fieldNumberOfAppealResultDescriptionListByQuestionIDResponseMap = new HashMap<>();
+            for (int numOfColumn = 0;
+                 numOfColumn < NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_RESULT_DESCRIPTION_LIST_BY_QUESTION_ID_FUNCTION;
+                 numOfColumn++) {
+                fieldNumberOfAppealResultDescriptionListByQuestionIDResponseMap.put(numOfColumn, tableRow[numOfColumn]);
+            }
+            appealResultDescriptionListByQuestionIDResponses
+                    .add(AppealResultDescriptionListByQuestionIDResponse
+                            .build(fieldNumberOfAppealResultDescriptionListByQuestionIDResponseMap));
+        }
+        return appealResultDescriptionListByQuestionIDResponses;
     }
 }

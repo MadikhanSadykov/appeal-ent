@@ -7,10 +7,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import kz.testcenter.app.appealent.model.functions.request.AppealByIDRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealListRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealResultDescriptionFileRequest;
+import kz.testcenter.app.appealent.model.functions.request.AppealResultDescriptionListByQuestionIDRequest;
 import kz.testcenter.app.appealent.model.functions.response.AppealByIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealListResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionFileByIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionFileResponse;
+import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionListByQuestionIDResponse;
 import kz.testcenter.app.appealent.service.AppealService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -80,5 +82,15 @@ public class AppealController {
         );
     }
 
+    @Operation(summary = "Получить список описывающий результат аппеляции по question ID",
+            description = "Обязательны все поля")
+    @GetMapping("/result/desc/list/by/question/id")
+    public ResponseEntity<List<AppealResultDescriptionListByQuestionIDResponse>> getAppealResultDescriptionListByQuestionId(
+            @RequestBody AppealResultDescriptionListByQuestionIDRequest resultDescriptionListByQuestionIDRequest) {
+        return new ResponseEntity<>(
+                appealService.getAppealResultDescriptionListByQuestionId(resultDescriptionListByQuestionIDRequest),
+                HttpStatus.OK
+        );
+    }
 
 }

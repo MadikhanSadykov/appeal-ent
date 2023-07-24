@@ -18,6 +18,7 @@ public class DBFunctionFieldsNameConstant {
     public static final String IN_APPEAL_ID_FIELD = "in_appeal_id";
     public static final String IN_TEST_SERVER_ID_FIELD = "in_test_server_id";
     public static final String IN_CRYPT_KEY_FIELD = "in_crypt_key";
-    public static final String IN_FILE_ID = "in_file_id";
+    public static final String IN_FILE_ID_FIELD = "in_file_id";
+    public static final String IN_ORIGINAL_QUESTION_ID_FIELD = "in_original_question_id";
 
 }

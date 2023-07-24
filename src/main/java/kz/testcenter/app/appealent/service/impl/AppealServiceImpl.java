@@ -3,12 +3,13 @@ package kz.testcenter.app.appealent.service.impl;
 import kz.testcenter.app.appealent.dao.AppealDAO;
 import kz.testcenter.app.appealent.model.functions.request.AppealByIDRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealListRequest;
-import kz.testcenter.app.appealent.model.functions.request.AppealResultDescriptionFileByIDRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealResultDescriptionFileRequest;
+import kz.testcenter.app.appealent.model.functions.request.AppealResultDescriptionListByQuestionIDRequest;
 import kz.testcenter.app.appealent.model.functions.response.AppealByIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealListResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionFileByIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionFileResponse;
+import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionListByQuestionIDResponse;
 import kz.testcenter.app.appealent.service.AppealService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,12 @@ public class AppealServiceImpl implements AppealService {
 
     @Override
     public AppealResultDescriptionFileByIDResponse getAppealResultDescriptionFileById(Integer id) {
-        return appealDAO.getAppealResultDescriptionFileByIDFun(id);
+        return appealDAO.getAppealResultDescriptionFileByIdFun(id);
     }
 
+    @Override
+    public List<AppealResultDescriptionListByQuestionIDResponse> getAppealResultDescriptionListByQuestionId(
+            AppealResultDescriptionListByQuestionIDRequest resultDescriptionListByQuestionIDRequest) {
+        return appealDAO.getAppealResultDescriptionListByQuestionIdFun(resultDescriptionListByQuestionIDRequest);
+    }
 }
