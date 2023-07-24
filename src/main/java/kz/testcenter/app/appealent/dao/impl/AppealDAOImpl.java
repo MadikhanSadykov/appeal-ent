@@ -5,12 +5,14 @@ import kz.testcenter.app.appealent.model.functions.request.AppealByIDRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealListRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealResultDescriptionFileRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealResultDescriptionListByQuestionIDRequest;
+import kz.testcenter.app.appealent.model.functions.request.AppealStatisticByQuestionIDRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealStatisticByQuestionRequest;
 import kz.testcenter.app.appealent.model.functions.response.AppealByIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealListResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionFileByIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionFileResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionListByQuestionIDResponse;
+import kz.testcenter.app.appealent.model.functions.response.AppealStatisticByQuestionIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealStatisticByQuestionResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -26,19 +28,38 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.*;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_APPEAL_ID_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_APPEAL_STATUS_TYPE_IDS_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_APPEAL_TYPE_ID_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_COMMISSION_MEMBER_TYPE_ID_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_CRYPT_KEY_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_END_DATE_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_EXPERT_ID_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_FILE_ID_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_FINISH_DATE_FILED;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_LANG_ID_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_MID_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_ORDER_LIST_FIELDS_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_ORIGINAL_QUESTION_ID_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_START_DATE_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_SUBJECT_ID_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_TEST_SERVER_ID_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_TEST_TYPE_ID_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_USER_ROLE_TYPE_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_BY_ID_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_LIST_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_RESULT_DESCRIPTION_FILE_BY_FILE_ID_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_RESULT_DESCRIPTION_FILE_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_RESULT_DESCRIPTION_LIST_BY_QUESTION_ID_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_STATISTIC_BY_QUESTION_FUNCTION;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_STATISTIC_BY_QUESTION_ID_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_BY_ID_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_LIST_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_RESULT_DESCRIPTION_FILE_BY_FILE_ID_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_RESULT_DESCRIPTION_FILE_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_RESULT_DESCRIPTION_LIST_BY_QUESTION_ID_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_STATISTIC_BY_QUESTION_FUNCTION;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_STATISTIC_BY_QUESTION_ID_FUNCTION;
 
 @Component
 @RequiredArgsConstructor
@@ -53,7 +74,7 @@ public class AppealDAOImpl implements AppealDAO {
         StoredProcedureQuery query = entityManager
                 .createStoredProcedureQuery(GET_APPEAL_LIST_FUNCTION)
                 .registerStoredProcedureParameter(IN_TEST_TYPE_ID_FIELD, Short.class, ParameterMode.IN)
-                .registerStoredProcedureParameter(IN_START_DATE_FILED, Date.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_START_DATE_FIELD, Date.class, ParameterMode.IN)
                 .registerStoredProcedureParameter(IN_END_DATE_FIELD, Date.class, ParameterMode.IN)
                 .registerStoredProcedureParameter(IN_EXPERT_ID_FIELD, Integer.class, ParameterMode.IN)
                 .registerStoredProcedureParameter(IN_SUBJECT_ID_FIELD, Integer.class, ParameterMode.IN)
@@ -66,7 +87,7 @@ public class AppealDAOImpl implements AppealDAO {
                 .registerStoredProcedureParameter(IN_MID_FIELD, Integer.class, ParameterMode.IN)
 
                 .setParameter(IN_TEST_TYPE_ID_FIELD, appealListRequest.getTestTypeId())
-                .setParameter(IN_START_DATE_FILED, appealListRequest.getStartDate())
+                .setParameter(IN_START_DATE_FIELD, appealListRequest.getStartDate())
                 .setParameter(IN_END_DATE_FIELD, appealListRequest.getEndDate())
                 .setParameter(IN_EXPERT_ID_FIELD, appealListRequest.getExpertId())
                 .setParameter(IN_SUBJECT_ID_FIELD, appealListRequest.getSubjectId())
@@ -220,11 +241,11 @@ public class AppealDAOImpl implements AppealDAO {
         StoredProcedureQuery query = entityManager
                 .createStoredProcedureQuery(GET_APPEAL_STATISTIC_BY_QUESTION_FUNCTION)
                 .registerStoredProcedureParameter(IN_TEST_TYPE_ID_FIELD, Short.class, ParameterMode.IN)
-                .registerStoredProcedureParameter(IN_START_DATE_FILED, Date.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_START_DATE_FIELD, Date.class, ParameterMode.IN)
                 .registerStoredProcedureParameter(IN_FINISH_DATE_FILED, Date.class, ParameterMode.IN)
 
                 .setParameter(IN_TEST_TYPE_ID_FIELD, appealStatisticByQuestionRequest.getTestTypeId())
-                .setParameter(IN_START_DATE_FILED, appealStatisticByQuestionRequest.getStartDate())
+                .setParameter(IN_START_DATE_FIELD, appealStatisticByQuestionRequest.getStartDate())
                 .setParameter(IN_FINISH_DATE_FILED, appealStatisticByQuestionRequest.getFinishDate());
 
         query.execute();
@@ -243,5 +264,37 @@ public class AppealDAOImpl implements AppealDAO {
                             .build(fieldNumberOfAppealStatisticByQuestionResponseMap));
         }
         return appealStatisticByQuestionResponses;
+    }
+
+    @Override
+    public List<AppealStatisticByQuestionIDResponse> getAppealStatisticByQuestionIdFun(
+            AppealStatisticByQuestionIDRequest request) {
+
+        StoredProcedureQuery query = entityManager
+                .createStoredProcedureQuery(GET_APPEAL_STATISTIC_BY_QUESTION_ID_FUNCTION)
+                .registerStoredProcedureParameter(IN_TEST_TYPE_ID_FIELD, Short.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_START_DATE_FIELD, Date.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_FINISH_DATE_FILED, Date.class, ParameterMode.IN)
+
+                .setParameter(IN_TEST_TYPE_ID_FIELD, request.getTestTypeId())
+                .setParameter(IN_START_DATE_FIELD, request.getStartDate())
+                .setParameter(IN_FINISH_DATE_FILED, request.getFinishDate());
+
+        query.execute();
+        List<Object[]> queryResultTable = query.getResultList();
+        List<AppealStatisticByQuestionIDResponse> appealStatisticByQuestionIDResponses = new ArrayList<>();
+
+        for (Object[] tableRow : queryResultTable) {
+            Map<Integer, Object> fieldNumberOfAppealStatisticByQuestionIDResponseMap = new HashMap<>();
+            for (int numOfColumn = 0;
+                 numOfColumn < NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_STATISTIC_BY_QUESTION_ID_FUNCTION;
+                 numOfColumn++) {
+                fieldNumberOfAppealStatisticByQuestionIDResponseMap.put(numOfColumn + 1, tableRow[numOfColumn]);
+            }
+            appealStatisticByQuestionIDResponses
+                    .add(AppealStatisticByQuestionIDResponse
+                            .build(fieldNumberOfAppealStatisticByQuestionIDResponseMap));
+        }
+        return appealStatisticByQuestionIDResponses;
     }
 }
