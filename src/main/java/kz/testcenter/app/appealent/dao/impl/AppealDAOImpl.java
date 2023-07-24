@@ -3,8 +3,12 @@ package kz.testcenter.app.appealent.dao.impl;
 import kz.testcenter.app.appealent.dao.AppealDAO;
 import kz.testcenter.app.appealent.model.functions.request.AppealByIDRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealListRequest;
+import kz.testcenter.app.appealent.model.functions.request.AppealResultDescriptionFileByIDRequest;
+import kz.testcenter.app.appealent.model.functions.request.AppealResultDescriptionFileRequest;
 import kz.testcenter.app.appealent.model.functions.response.AppealByIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealListResponse;
+import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionFileByIDResponse;
+import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionFileResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -22,8 +26,12 @@ import java.util.Map;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.*;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_BY_ID_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_LIST_FUNCTION;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_RESULT_DESCRIPTION_FILE_BY_FILE_ID_FUNCTION;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_RESULT_DESCRIPTION_FILE_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_BY_ID_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_LIST_FUNCTION;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_RESULT_DESCRIPTION_FILE_BY_FILE_ID_FUNCTION;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_RESULT_DESCRIPTION_FILE_FUNCTION;
 
 @Component
 @RequiredArgsConstructor
@@ -73,7 +81,9 @@ public class AppealDAOImpl implements AppealDAO {
             for (int numOfColumn = 0; numOfColumn < NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_LIST_FUNCTION; numOfColumn++) {
                 fieldNumberOfAppealListResponseMap.put(numOfColumn, tableRow[numOfColumn]);
             }
-            appealListResponses.add(AppealListResponse.build(fieldNumberOfAppealListResponseMap));
+            appealListResponses
+                    .add(AppealListResponse
+                            .build(fieldNumberOfAppealListResponseMap));
         }
         return appealListResponses;
     }
@@ -102,8 +112,63 @@ public class AppealDAOImpl implements AppealDAO {
             for (int numOfColumn = 0; numOfColumn < NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_BY_ID_FUNCTION; numOfColumn++) {
                 fieldNumberOfAppealByIdResponseMap.put(numOfColumn, tableRow[numOfColumn]);
             }
-            appealByIDResponses.add(AppealByIDResponse.build(fieldNumberOfAppealByIdResponseMap));
+            appealByIDResponses
+                    .add(AppealByIDResponse
+                            .build(fieldNumberOfAppealByIdResponseMap));
         }
         return appealByIDResponses;
+    }
+
+    @Override
+    public List<AppealResultDescriptionFileResponse> getAppealResultDescriptionFileFun(AppealResultDescriptionFileRequest request) {
+        StoredProcedureQuery query = entityManager
+                .createStoredProcedureQuery(GET_APPEAL_RESULT_DESCRIPTION_FILE_FUNCTION)
+                .registerStoredProcedureParameter(IN_APPEAL_ID_FIELD, Integer.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_APPEAL_TYPE_ID_FIELD, Short.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_TEST_SERVER_ID_FIELD, Short.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_EXPERT_ID_FIELD, Integer.class, ParameterMode.IN)
+
+                .setParameter(IN_APPEAL_ID_FIELD, request.getAppealId())
+                .setParameter(IN_APPEAL_TYPE_ID_FIELD, request.getAppealTypeId())
+                .setParameter(IN_TEST_SERVER_ID_FIELD, request.getTestServerId())
+                .setParameter(IN_EXPERT_ID_FIELD, request.getExpertId());
+
+        query.execute();
+        List<Object[]> queryResultTable = query.getResultList();
+
+        List<AppealResultDescriptionFileResponse> resultDescriptionFileResponses = new ArrayList<>();
+        for (Object[] tableRow : queryResultTable) {
+            Map<Integer, Object> fieldNumberOfAppealResultDescriptionFileMap = new HashMap<>();
+            for (int numOfColumn = 0;
+                 numOfColumn < NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_RESULT_DESCRIPTION_FILE_FUNCTION; numOfColumn++) {
+                fieldNumberOfAppealResultDescriptionFileMap.put(numOfColumn, tableRow[numOfColumn]);
+            }
+            resultDescriptionFileResponses.add(
+                    AppealResultDescriptionFileResponse
+                            .build(fieldNumberOfAppealResultDescriptionFileMap));
+        }
+        return resultDescriptionFileResponses;
+    }
+
+    @Override
+    public AppealResultDescriptionFileByIDResponse getAppealResultDescriptionFileByIDFun(Integer id) {
+
+        StoredProcedureQuery query = entityManager
+                .createStoredProcedureQuery(GET_APPEAL_RESULT_DESCRIPTION_FILE_BY_FILE_ID_FUNCTION)
+                .registerStoredProcedureParameter(IN_FILE_ID, Integer.class, ParameterMode.IN)
+
+                .setParameter(IN_FILE_ID, id);
+
+        query.execute();
+        List<Object[]> queryResulTable = query.getResultList();
+
+        Map<Integer, Object> fieldNumberOfAppealResultDescriptionFileByIDMap = new HashMap<>();
+        for (int numOfColumn = 0;
+             numOfColumn < NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_RESULT_DESCRIPTION_FILE_BY_FILE_ID_FUNCTION;
+             numOfColumn++) {
+            fieldNumberOfAppealResultDescriptionFileByIDMap.put(numOfColumn, queryResulTable.get(0)[numOfColumn]);
+        }
+        return AppealResultDescriptionFileByIDResponse
+                .build(fieldNumberOfAppealResultDescriptionFileByIDMap);
     }
 }

@@ -252,5 +252,4 @@ public class AppealListResponse {
                 (Date) numberAndFieldOfAppealListResponseMap.get(57)
         );
     }
-
 }
