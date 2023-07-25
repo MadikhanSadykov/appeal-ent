@@ -42,4 +42,6 @@ public interface AppealService {
 
     List<AppealUploadFileResponse> getAppealUploadFile(AppealUploadFileRequest appealUploadFileRequest);
 
+    String getHtmlAppealResultDescription(Integer appealId, Short appealTypeId, Short testServerId);
+
 }

@@ -132,4 +132,17 @@ public class AppealController {
         );
     }
 
+    @Operation(summary = "Получить HTML результат аппеляции",
+            description = "Все поля обязательны")
+    @GetMapping("/result/desc/html/by/{appealId}/{appealTypeId}/{testServerId}")
+    public ResponseEntity<String> getHtmlAppealResultDescription(
+            @PathVariable(name = "appealId") Integer appealId,
+            @PathVariable(name = "appealTypeId") Short appealTypeId,
+            @PathVariable(name = "testServerId") Short testServerId) {
+        return new ResponseEntity<>(
+                appealService.getHtmlAppealResultDescription(appealId, appealTypeId, testServerId),
+                HttpStatus.OK
+        );
+    }
+
 }

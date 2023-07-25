@@ -72,4 +72,9 @@ public class AppealServiceImpl implements AppealService {
         return appealDAO.getAppealUploadFileResponseFun(appealUploadFileRequest);
     }
 
+    @Override
+    public String getHtmlAppealResultDescription(Integer appealId, Short appealTypeId, Short testServerId) {
+        return appealDAO.getHtmlAppealResultDescription(appealId, appealTypeId, testServerId);
+    }
+
 }

@@ -39,4 +39,6 @@ public interface AppealDAO {
 
     List<AppealUploadFileResponse> getAppealUploadFileResponseFun(AppealUploadFileRequest appealUploadFileRequest);
 
+    String getHtmlAppealResultDescription(Integer appealId, Short appealTypeId, Short testServerId);
+
 }

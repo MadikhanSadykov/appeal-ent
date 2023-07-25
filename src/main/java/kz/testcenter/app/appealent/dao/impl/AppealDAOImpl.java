@@ -56,6 +56,7 @@ import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_STATISTIC_BY_QUESTION_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_STATISTIC_BY_QUESTION_ID_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_UPLOAD_FILE_FUNCTION;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_HTML_APPEAL_RESULT_DESCRIPTION_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_BY_ID_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_LIST_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_RESULT_DESCRIPTION_FILE_BY_FILE_ID_FUNCTION;
@@ -339,6 +340,23 @@ public class AppealDAOImpl implements AppealDAO {
                             .build(fieldNumberOfAppealUploadFileResponseMap));
         }
         return appealStatisticByQuestionIDResponses;
+    }
+
+    @Override
+    @Transactional
+    public String getHtmlAppealResultDescription(Integer appealId, Short appealTypeId, Short testServerId) {
+        StoredProcedureQuery query = entityManager
+                .createStoredProcedureQuery(GET_HTML_APPEAL_RESULT_DESCRIPTION_FUNCTION)
+                .registerStoredProcedureParameter(IN_APPEAL_ID_FIELD, Integer.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_APPEAL_TYPE_ID_FIELD, Short.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_TEST_SERVER_ID_FIELD, Short.class, ParameterMode.IN)
+
+                .setParameter(IN_APPEAL_ID_FIELD, appealId)
+                .setParameter(IN_APPEAL_TYPE_ID_FIELD, appealTypeId)
+                .setParameter(IN_TEST_SERVER_ID_FIELD, testServerId);
+
+        query.execute();
+        return  (String) query.getSingleResult();
     }
 
 }
