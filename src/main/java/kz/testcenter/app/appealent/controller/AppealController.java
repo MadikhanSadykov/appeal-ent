@@ -18,6 +18,7 @@ import kz.testcenter.app.appealent.model.functions.response.appeal.AppealResultD
 import kz.testcenter.app.appealent.model.functions.response.appeal.AppealResultDescriptionListByQuestionIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.appeal.AppealStatisticByQuestionIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.appeal.AppealStatisticByQuestionResponse;
+import kz.testcenter.app.appealent.model.functions.response.appeal.AppealStudentResponse;
 import kz.testcenter.app.appealent.model.functions.response.appeal.AppealUploadFileResponse;
 import kz.testcenter.app.appealent.service.AppealService;
 import lombok.RequiredArgsConstructor;
@@ -142,6 +143,17 @@ public class AppealController {
         return new ResponseEntity<>(
                 appealService.getHtmlAppealResultDescription(appealId, appealTypeId, testServerId),
                 HttpStatus.OK
+        );
+    }
+
+    @Operation(summary = "Получить аппеляцию студента по его student_test_id",
+            description = "Обязательны все поля")
+    @GetMapping("/student/by/{studentTestId}")
+    public ResponseEntity<List<AppealStudentResponse>> getStudentAppeal(
+            @PathVariable(name = "studentTestId") Integer studentTestId) {
+        return new ResponseEntity<>(
+          appealService.getAppealStudent(studentTestId),
+          HttpStatus.OK
         );
     }
 

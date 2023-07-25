@@ -21,5 +21,6 @@ public class DBFunctionFieldsNameConstant {
     public static final String IN_FILE_ID_FIELD = "in_file_id";
     public static final String IN_ORIGINAL_QUESTION_ID_FIELD = "in_original_question_id";
     public static final String IN_USER_ID_FIELD = "in_user_id";
+    public static final String IN_STUDENT_TEST_ID_FIELD = "in_student_test_id";
 
 }

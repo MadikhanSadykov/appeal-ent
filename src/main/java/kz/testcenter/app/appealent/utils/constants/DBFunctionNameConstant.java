@@ -19,4 +19,5 @@ public class DBFunctionNameConstant {
     public static final String GET_EXPERT_SUBJECT_LIST_FUNCTION = "public.fn_get_expert_subject_list";
     public static final String GET_HTML_APPEAL_RESULT_DESCRIPTION_FUNCTION =
             "public.fn_get_html_appeal_result_description";
+    public static final String GET_STUDENT_APPEAL_FUNCTION = "public.fn_get_student_appeal";
 }

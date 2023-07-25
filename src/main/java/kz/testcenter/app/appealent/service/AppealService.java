@@ -14,6 +14,7 @@ import kz.testcenter.app.appealent.model.functions.response.appeal.AppealResultD
 import kz.testcenter.app.appealent.model.functions.response.appeal.AppealResultDescriptionListByQuestionIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.appeal.AppealStatisticByQuestionIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.appeal.AppealStatisticByQuestionResponse;
+import kz.testcenter.app.appealent.model.functions.response.appeal.AppealStudentResponse;
 import kz.testcenter.app.appealent.model.functions.response.appeal.AppealUploadFileResponse;
 import org.springframework.stereotype.Service;
 
@@ -43,5 +44,7 @@ public interface AppealService {
     List<AppealUploadFileResponse> getAppealUploadFile(AppealUploadFileRequest appealUploadFileRequest);
 
     String getHtmlAppealResultDescription(Integer appealId, Short appealTypeId, Short testServerId);
+
+    List<AppealStudentResponse> getAppealStudent(Integer studentTestId);
 
 }

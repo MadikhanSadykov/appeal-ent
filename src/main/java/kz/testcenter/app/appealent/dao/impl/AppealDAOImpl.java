@@ -15,6 +15,7 @@ import kz.testcenter.app.appealent.model.functions.response.appeal.AppealResultD
 import kz.testcenter.app.appealent.model.functions.response.appeal.AppealResultDescriptionListByQuestionIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.appeal.AppealStatisticByQuestionIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.appeal.AppealStatisticByQuestionResponse;
+import kz.testcenter.app.appealent.model.functions.response.appeal.AppealStudentResponse;
 import kz.testcenter.app.appealent.model.functions.response.appeal.AppealUploadFileResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -44,6 +45,7 @@ import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameCo
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_ORDER_LIST_FIELDS_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_ORIGINAL_QUESTION_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_START_DATE_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_STUDENT_TEST_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_SUBJECT_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_TEST_SERVER_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_TEST_TYPE_ID_FIELD;
@@ -57,6 +59,7 @@ import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_STATISTIC_BY_QUESTION_ID_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_UPLOAD_FILE_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_HTML_APPEAL_RESULT_DESCRIPTION_FUNCTION;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_STUDENT_APPEAL_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_BY_ID_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_LIST_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_RESULT_DESCRIPTION_FILE_BY_FILE_ID_FUNCTION;
@@ -65,6 +68,7 @@ import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFiel
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_STATISTIC_BY_QUESTION_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_STATISTIC_BY_QUESTION_ID_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_UPLOAD_FILE_FUNCTION;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_STUDENT_APPEAL_FUNCTION;
 
 @Component
 @RequiredArgsConstructor
@@ -357,6 +361,32 @@ public class AppealDAOImpl implements AppealDAO {
 
         query.execute();
         return  (String) query.getSingleResult();
+    }
+
+    @Override
+    @Transactional
+    public List<AppealStudentResponse> getStudentAppeal(Integer studentTestId) {
+        StoredProcedureQuery query = entityManager
+                .createStoredProcedureQuery(GET_STUDENT_APPEAL_FUNCTION)
+                .registerStoredProcedureParameter(IN_STUDENT_TEST_ID_FIELD, Integer.class, ParameterMode.IN)
+                .setParameter(IN_STUDENT_TEST_ID_FIELD, studentTestId);
+
+        query.execute();
+        List<Object[]> queryResultTable = query.getResultList();
+        List<AppealStudentResponse> appealStudentResponses = new ArrayList<>();
+
+        for (Object[] tableRow : queryResultTable) {
+            Map<Integer, Object> fieldNumberOfAppealStudentResponseMap = new HashMap<>();
+            for (int numOfColumn = 0;
+                 numOfColumn < NUMBER_OF_RETURN_FIELDS_OF_GET_STUDENT_APPEAL_FUNCTION;
+                 numOfColumn++) {
+                fieldNumberOfAppealStudentResponseMap.put(numOfColumn + 1, tableRow[numOfColumn]);
+            }
+            appealStudentResponses.add(
+                    AppealStudentResponse
+                            .build(fieldNumberOfAppealStudentResponseMap));
+        }
+        return appealStudentResponses;
     }
 
 }

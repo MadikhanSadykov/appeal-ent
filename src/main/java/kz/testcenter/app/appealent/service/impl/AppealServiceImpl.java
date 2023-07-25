@@ -15,6 +15,7 @@ import kz.testcenter.app.appealent.model.functions.response.appeal.AppealResultD
 import kz.testcenter.app.appealent.model.functions.response.appeal.AppealResultDescriptionListByQuestionIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.appeal.AppealStatisticByQuestionIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.appeal.AppealStatisticByQuestionResponse;
+import kz.testcenter.app.appealent.model.functions.response.appeal.AppealStudentResponse;
 import kz.testcenter.app.appealent.model.functions.response.appeal.AppealUploadFileResponse;
 import kz.testcenter.app.appealent.service.AppealService;
 import lombok.RequiredArgsConstructor;
@@ -77,4 +78,8 @@ public class AppealServiceImpl implements AppealService {
         return appealDAO.getHtmlAppealResultDescription(appealId, appealTypeId, testServerId);
     }
 
+    @Override
+    public List<AppealStudentResponse> getAppealStudent(Integer studentTestId) {
+        return appealDAO.getStudentAppeal(studentTestId);
+    }
 }
