@@ -15,6 +15,7 @@ import kz.testcenter.app.appealent.model.functions.response.appeal.AppealResultD
 import kz.testcenter.app.appealent.model.functions.response.appeal.AppealStatisticByQuestionIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.appeal.AppealStatisticByQuestionResponse;
 import kz.testcenter.app.appealent.model.functions.response.appeal.AppealStudentResponse;
+import kz.testcenter.app.appealent.model.functions.response.appeal.AppealStudentUploadFileResponse;
 import kz.testcenter.app.appealent.model.functions.response.appeal.AppealUploadFileResponse;
 
 import java.util.List;
@@ -43,5 +44,8 @@ public interface AppealDAO {
     String getHtmlAppealResultDescription(Integer appealId, Short appealTypeId, Short testServerId);
 
     List<AppealStudentResponse> getStudentAppeal(Integer studentTestId);
+
+    List<AppealStudentUploadFileResponse> getAppealStudentUploadFile(
+            Integer studentTestId, Short appealTypeId, Short testServerId);
 
 }

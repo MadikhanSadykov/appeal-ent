@@ -19,6 +19,7 @@ import kz.testcenter.app.appealent.model.functions.response.appeal.AppealResultD
 import kz.testcenter.app.appealent.model.functions.response.appeal.AppealStatisticByQuestionIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.appeal.AppealStatisticByQuestionResponse;
 import kz.testcenter.app.appealent.model.functions.response.appeal.AppealStudentResponse;
+import kz.testcenter.app.appealent.model.functions.response.appeal.AppealStudentUploadFileResponse;
 import kz.testcenter.app.appealent.model.functions.response.appeal.AppealUploadFileResponse;
 import kz.testcenter.app.appealent.service.AppealService;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +40,8 @@ public class AppealController {
 
     private final AppealService appealService;
 
-    @Operation(summary = "Получить список Аппеляций", description = "Обязательные поля: 'test_type_id', " +
+    @Operation(summary = "Получить список Аппеляций", description = "fn_get_appeal_list.\n" +
+                    "Обязательные поля: 'test_type_id', " +
                     "'start_date', 'end_date'.\n" +
                     "! Если остальные поля не назначены, то передать в них - null !\n" +
                     "Возвращает лист аппеляций\n")
@@ -152,8 +154,21 @@ public class AppealController {
     public ResponseEntity<List<AppealStudentResponse>> getStudentAppeal(
             @PathVariable(name = "studentTestId") Integer studentTestId) {
         return new ResponseEntity<>(
-          appealService.getAppealStudent(studentTestId),
-          HttpStatus.OK
+                appealService.getAppealStudent(studentTestId),
+                HttpStatus.OK
+        );
+    }
+
+    @Operation(summary = "Получить загруженый файл аппеляции студента",
+            description = "fn_get_student_appeal_upload_file")
+    @GetMapping("/student/uploadFile/by/{studentTestId}/{appealTypeId}/{testServerId}")
+    public ResponseEntity<List<AppealStudentUploadFileResponse>> getAppealStudentUploadFile(
+            @PathVariable(name = "studentTestId") Integer studentTestId,
+            @PathVariable(name = "appealTypeId") Short appealTypeId,
+            @PathVariable(name = "testServerId") Short testServerId) {
+        return new ResponseEntity<>(
+                appealService.getAppealStudentUploadFile(studentTestId, appealTypeId, testServerId),
+                HttpStatus.OK
         );
     }
 
