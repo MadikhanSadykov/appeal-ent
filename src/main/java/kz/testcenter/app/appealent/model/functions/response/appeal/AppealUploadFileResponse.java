@@ -1,4 +1,4 @@
-package kz.testcenter.app.appealent.model.functions.response;
+package kz.testcenter.app.appealent.model.functions.response.appeal;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

@@ -1,21 +1,21 @@
 package kz.testcenter.app.appealent.service.impl;
 
 import kz.testcenter.app.appealent.dao.AppealDAO;
-import kz.testcenter.app.appealent.model.functions.request.AppealByIDRequest;
-import kz.testcenter.app.appealent.model.functions.request.AppealListRequest;
-import kz.testcenter.app.appealent.model.functions.request.AppealResultDescriptionFileRequest;
-import kz.testcenter.app.appealent.model.functions.request.AppealResultDescriptionListByQuestionIDRequest;
-import kz.testcenter.app.appealent.model.functions.request.AppealStatisticByQuestionIDRequest;
-import kz.testcenter.app.appealent.model.functions.request.AppealStatisticByQuestionRequest;
-import kz.testcenter.app.appealent.model.functions.request.AppealUploadFileRequest;
-import kz.testcenter.app.appealent.model.functions.response.AppealByIDResponse;
-import kz.testcenter.app.appealent.model.functions.response.AppealListResponse;
-import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionFileByIDResponse;
-import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionFileResponse;
-import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionListByQuestionIDResponse;
-import kz.testcenter.app.appealent.model.functions.response.AppealStatisticByQuestionIDResponse;
-import kz.testcenter.app.appealent.model.functions.response.AppealStatisticByQuestionResponse;
-import kz.testcenter.app.appealent.model.functions.response.AppealUploadFileResponse;
+import kz.testcenter.app.appealent.model.functions.request.appeal.AppealByIDRequest;
+import kz.testcenter.app.appealent.model.functions.request.appeal.AppealListRequest;
+import kz.testcenter.app.appealent.model.functions.request.appeal.AppealResultDescriptionFileRequest;
+import kz.testcenter.app.appealent.model.functions.request.appeal.AppealResultDescriptionListByQuestionIDRequest;
+import kz.testcenter.app.appealent.model.functions.request.appeal.AppealStatisticByQuestionIDRequest;
+import kz.testcenter.app.appealent.model.functions.request.appeal.AppealStatisticByQuestionRequest;
+import kz.testcenter.app.appealent.model.functions.request.appeal.AppealUploadFileRequest;
+import kz.testcenter.app.appealent.model.functions.response.appeal.AppealByIDResponse;
+import kz.testcenter.app.appealent.model.functions.response.appeal.AppealListResponse;
+import kz.testcenter.app.appealent.model.functions.response.appeal.AppealResultDescriptionFileByIDResponse;
+import kz.testcenter.app.appealent.model.functions.response.appeal.AppealResultDescriptionFileResponse;
+import kz.testcenter.app.appealent.model.functions.response.appeal.AppealResultDescriptionListByQuestionIDResponse;
+import kz.testcenter.app.appealent.model.functions.response.appeal.AppealStatisticByQuestionIDResponse;
+import kz.testcenter.app.appealent.model.functions.response.appeal.AppealStatisticByQuestionResponse;
+import kz.testcenter.app.appealent.model.functions.response.appeal.AppealUploadFileResponse;
 import kz.testcenter.app.appealent.service.AppealService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -71,4 +71,5 @@ public class AppealServiceImpl implements AppealService {
     public List<AppealUploadFileResponse> getAppealUploadFile(AppealUploadFileRequest appealUploadFileRequest) {
         return appealDAO.getAppealUploadFileResponseFun(appealUploadFileRequest);
     }
+
 }
