@@ -1,7 +1,7 @@
 package kz.testcenter.app.appealent.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import kz.testcenter.app.appealent.model.functions.response.StudentInfoResponse;
+import kz.testcenter.app.appealent.model.functions.response.student.StudentInfoResponse;
 import kz.testcenter.app.appealent.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
