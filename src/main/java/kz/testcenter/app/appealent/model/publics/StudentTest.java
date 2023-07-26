@@ -65,7 +65,7 @@ public class StudentTest implements Serializable {
 
 
     // Место тестирования
-    // TODO: Найти/Создать таблицу "test_org" - место проведения тестирования или вводится вручную
+    // Найти/Создать таблицу "test_org" - место проведения тестирования или вводится вручную
     @Column(name = "test_org_id", nullable = false)
     private Integer testOrgId;
 

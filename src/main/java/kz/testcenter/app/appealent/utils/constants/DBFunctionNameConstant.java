@@ -21,4 +21,5 @@ public class DBFunctionNameConstant {
             "public.fn_get_html_appeal_result_description";
     public static final String GET_STUDENT_APPEAL_FUNCTION = "public.fn_get_student_appeal";
     public static final String GET_STUDENT_APPEAL_UPLOAD_FILE_FUNCTION = "public.fn_get_student_appeal_upload_file";
+    public static final String GET_STUDENT_INFO_FUNCTION = "public.fn_get_student_info";
 }
