@@ -52,7 +52,7 @@ public interface AppealService {
     List<AppealStudentUploadFileResponse> getAppealStudentUploadFile(
             Integer studentTestId, Short appealTypeId, Short testServerId);
 
-    void returnToExpertFromAllStatus(Integer appealId, Short appealTypeId, Short testServerId, Short ignoreWarning);
+    Short returnToExpertFromAllStatus(Integer appealId, Short appealTypeId, Short testServerId, Short ignoreWarning);
 
     void setToExpert(AppealSetToExpertRequest appealSetToExpertRequest);
 

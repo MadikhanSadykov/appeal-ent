@@ -92,8 +92,8 @@ public class AppealServiceImpl implements AppealService {
     }
 
     @Override
-    public void returnToExpertFromAllStatus(Integer appealId, Short appealTypeId, Short testServerId, Short ignoreWarning) {
-        appealDAO.returnToExpertFromAllStatus(appealId, appealTypeId, testServerId, ignoreWarning);
+    public Short returnToExpertFromAllStatus(Integer appealId, Short appealTypeId, Short testServerId, Short ignoreWarning) {
+        return appealDAO.returnToExpertFromAllStatus(appealId, appealTypeId, testServerId, ignoreWarning);
     }
 
     @Override

@@ -431,7 +431,7 @@ public class AppealDAOImpl implements AppealDAO {
 
     @Override
     @Transactional
-    public void returnToExpertFromAllStatus(Integer appealId, Short appealTypeId, Short testServerId, Short ignoreWarning) {
+    public Short returnToExpertFromAllStatus(Integer appealId, Short appealTypeId, Short testServerId, Short ignoreWarning) {
         StoredProcedureQuery query = entityManager
                 .createStoredProcedureQuery(APPEAL_RETURN_TO_EXPERT_FROM_ALL_STATUS_FUNCTION)
                 .registerStoredProcedureParameter(IN_APPEAL_ID_FIELD, Integer.class, ParameterMode.IN)
@@ -445,11 +445,12 @@ public class AppealDAOImpl implements AppealDAO {
                 .setParameter(IN_IGNORE_WARNING_FIELD, ignoreWarning);
 
         query.executeUpdate();
+        return (Short) query.getSingleResult();
     }
 
     @Override
     @Transactional
-    public void setToExpert(AppealSetToExpertRequest appealSetToExpertRequest) {
+    public Short setToExpert(AppealSetToExpertRequest appealSetToExpertRequest) {
         StoredProcedureQuery query = entityManager
                 .createStoredProcedureQuery(APPEAL_SET_TO_EXPERT_FUNCTION)
                 .registerStoredProcedureParameter(IN_APPEAL_ID_FIELD, Integer.class, ParameterMode.IN)
@@ -471,5 +472,6 @@ public class AppealDAOImpl implements AppealDAO {
                 .setParameter(IN_IGNORE_NOT_SUITABLE_FIELD, appealSetToExpertRequest.getIgnoreNotSuitable());
 
         query.executeUpdate();
+        return (Short) query.getSingleResult();
     }
 }

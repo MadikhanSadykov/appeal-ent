@@ -178,13 +178,15 @@ public class AppealController {
     @Operation(summary = "Вернуть аппеляцию эксперту со статусом - В работе",
             description = "fn_appeal_return_to_expert_from_all_status")
     @PutMapping("/return/to/expert/by/{appealId}/{appealTypeId}/{testServerId}/{ignoreWarning}")
-    @ResponseStatus(HttpStatus.OK)
-    public void returnAppealToExpertFromAllStatus(
+    public ResponseEntity<Short> returnAppealToExpertFromAllStatus(
             @PathVariable(name = "appealId") Integer appealId,
             @PathVariable(name = "appealTypeId") Short appealTypeId,
             @PathVariable(name = "testServerId") Short testServerId,
             @PathVariable(name = "ignoreWarning") Short ignoreWarning) {
-        appealService.returnToExpertFromAllStatus(appealId, appealTypeId, testServerId, ignoreWarning);
+        return new ResponseEntity<>(
+                appealService.returnToExpertFromAllStatus(appealId, appealTypeId, testServerId, ignoreWarning),
+                HttpStatus.OK
+        );
     }
 
     @Operation(summary = "Назначить аппеляцию на эксперта", description = "fn_appeal_set_to_expert")
