@@ -97,8 +97,13 @@ public class AppealServiceImpl implements AppealService {
     }
 
     @Override
-    public void setToExpert(AppealSetToExpertRequest appealSetToExpertRequest) {
-        appealDAO.setToExpert(appealSetToExpertRequest);
+    public Short setToExpert(AppealSetToExpertRequest appealSetToExpertRequest) {
+        return appealDAO.setToExpert(appealSetToExpertRequest);
+    }
+
+    @Override
+    public String numericAnswerToLetter(Short answerOrder) {
+        return appealDAO.numericAnswerToLetter(answerOrder);
     }
 
 }

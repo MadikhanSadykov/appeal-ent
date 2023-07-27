@@ -191,9 +191,20 @@ public class AppealController {
 
     @Operation(summary = "Назначить аппеляцию на эксперта", description = "fn_appeal_set_to_expert")
     @PutMapping("/set/to/expert")
-    @ResponseStatus(HttpStatus.OK)
-    public void setToExpert(@RequestBody AppealSetToExpertRequest appealSetToExpertRequest) {
-        appealService.setToExpert(appealSetToExpertRequest);
+    public ResponseEntity<Short> setToExpert(@RequestBody AppealSetToExpertRequest appealSetToExpertRequest) {
+        return new ResponseEntity<>(
+                appealService.setToExpert(appealSetToExpertRequest),
+                HttpStatus.OK
+        );
+    }
+
+    @Operation(summary = "Цифровое обозначение ответа в букву", description = "fn_numeric_answer_to_letter")
+    @GetMapping("/numericAnswer/to/letter")
+    public ResponseEntity<String> numericAnswerToLetter(Short answerOrder) {
+        return new ResponseEntity<>(
+                appealService.numericAnswerToLetter(answerOrder),
+                HttpStatus.OK
+        );
     }
 
 }

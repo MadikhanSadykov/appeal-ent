@@ -53,4 +53,6 @@ public interface AppealDAO {
 
     Short setToExpert(AppealSetToExpertRequest appealSetToExpertRequest);
 
+    String numericAnswerToLetter(Short answerOrder);
+
 }

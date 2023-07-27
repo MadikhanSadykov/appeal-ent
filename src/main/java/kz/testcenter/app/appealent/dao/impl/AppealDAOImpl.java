@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_ANSWER_ORDER_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_APPEAL_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_APPEAL_STATUS_TYPE_IDS_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_APPEAL_TYPE_ID_FIELD;
@@ -67,6 +68,7 @@ import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_HTML_APPEAL_RESULT_DESCRIPTION_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_STUDENT_APPEAL_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_STUDENT_APPEAL_UPLOAD_FILE_FUNCTION;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.NUMERIC_ANSWER_TO_LETTER_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_BY_ID_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_LIST_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_RESULT_DESCRIPTION_FILE_BY_FILE_ID_FUNCTION;
@@ -474,4 +476,17 @@ public class AppealDAOImpl implements AppealDAO {
         query.executeUpdate();
         return (Short) query.getSingleResult();
     }
+
+    @Override
+    @Transactional
+    public String numericAnswerToLetter(Short answerOrder) {
+        StoredProcedureQuery query = entityManager
+                .createStoredProcedureQuery(NUMERIC_ANSWER_TO_LETTER_FUNCTION)
+                .registerStoredProcedureParameter(IN_ANSWER_ORDER_FIELD, Short.class, ParameterMode.IN)
+                .setParameter(IN_ANSWER_ORDER_FIELD, answerOrder);
+
+        query.execute();
+        return (String) query.getSingleResult();
+    }
+
 }

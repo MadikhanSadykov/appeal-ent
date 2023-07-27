@@ -30,5 +30,6 @@ public class DBFunctionNameConstant {
             "public.fn_appeal_return_to_expert_from_all_status";
     public static final String APPEAL_SET_TO_EXPERT_FUNCTION = "public.fn_appeal_set_to_expert";
     public static final String AUTH_USER_FUNCTION = "public.fn_auth_user";
+    public static final String NUMERIC_ANSWER_TO_LETTER_FUNCTION = "public.fn_numeric_answer_to_letter";
 
 }

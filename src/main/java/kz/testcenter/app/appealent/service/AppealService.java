@@ -54,6 +54,8 @@ public interface AppealService {
 
     Short returnToExpertFromAllStatus(Integer appealId, Short appealTypeId, Short testServerId, Short ignoreWarning);
 
-    void setToExpert(AppealSetToExpertRequest appealSetToExpertRequest);
+    Short setToExpert(AppealSetToExpertRequest appealSetToExpertRequest);
+
+    String numericAnswerToLetter(Short answerOrder);
 
 }
