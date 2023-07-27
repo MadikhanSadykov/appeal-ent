@@ -26,5 +26,6 @@ public class DBFunctionFieldsNameConstant {
     public static final String IN_ROLE_TYPE_ID_FIELD = "in_role_type_id";
     public static final String IN_CALL_FROM_ID_FIELD = "in_call_from_id";
     public static final String IN_ORG_TYPE_ID_FIELD = "in_org_type_id";
+    public static final String IN_IGNORE_WARNING_FIELD = "in_ignore_warning";
 
 }

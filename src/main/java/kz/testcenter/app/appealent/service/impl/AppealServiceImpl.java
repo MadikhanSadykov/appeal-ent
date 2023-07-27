@@ -90,4 +90,9 @@ public class AppealServiceImpl implements AppealService {
         return appealDAO.getAppealStudentUploadFile(studentTestId, appealTypeId, testServerId);
     }
 
+    @Override
+    public void returnToExpertFromAllStatus(Integer appealId, Short appealTypeId, Short testServerId, Short ignoreWarning) {
+        appealDAO.returnToExpertFromAllStatus(appealId, appealTypeId, testServerId, ignoreWarning);
+    }
+
 }

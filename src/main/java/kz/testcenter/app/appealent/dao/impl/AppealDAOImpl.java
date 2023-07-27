@@ -41,6 +41,7 @@ import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameCo
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_EXPERT_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_FILE_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_FINISH_DATE_FILED;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_IGNORE_WARNING_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_LANG_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_MID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_ORDER_LIST_FIELDS_FIELD;
@@ -51,6 +52,7 @@ import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameCo
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_TEST_SERVER_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_TEST_TYPE_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_USER_ROLE_TYPE_ID_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.APPEAL_RETURN_TO_EXPERT_FROM_ALL_STATUS_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_BY_ID_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_LIST_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_RESULT_DESCRIPTION_FILE_BY_FILE_ID_FUNCTION;
@@ -422,6 +424,24 @@ public class AppealDAOImpl implements AppealDAO {
                             .build(fieldNumberOfAppealStudentResponseMap));
         }
         return appealStudentUploadFileResponses;
+    }
+
+    @Override
+    @Transactional
+    public void returnToExpertFromAllStatus(Integer appealId, Short appealTypeId, Short testServerId, Short ignoreWarning) {
+        StoredProcedureQuery query = entityManager
+                .createStoredProcedureQuery(APPEAL_RETURN_TO_EXPERT_FROM_ALL_STATUS_FUNCTION)
+                .registerStoredProcedureParameter(IN_APPEAL_ID_FIELD, Integer.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_APPEAL_TYPE_ID_FIELD, Short.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_TEST_SERVER_ID_FIELD, Short.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_IGNORE_WARNING_FIELD, Short.class, ParameterMode.IN)
+
+                .setParameter(IN_APPEAL_ID_FIELD, appealId)
+                .setParameter(IN_APPEAL_TYPE_ID_FIELD, appealTypeId)
+                .setParameter(IN_TEST_SERVER_ID_FIELD, testServerId)
+                .setParameter(IN_IGNORE_WARNING_FIELD, ignoreWarning);
+
+        query.executeUpdate();
     }
 
 }
