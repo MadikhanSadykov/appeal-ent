@@ -1,6 +1,8 @@
 package kz.testcenter.app.appealent.dao.impl;
 
 import kz.testcenter.app.appealent.dao.UserDAO;
+import kz.testcenter.app.appealent.model.functions.request.AuthUserRequest;
+import kz.testcenter.app.appealent.model.functions.response.AuthUserResponse;
 import kz.testcenter.app.appealent.model.functions.response.UserRestrictListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,10 +16,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_LOGIN_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_ORG_TYPE_ID_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_PASSWORD_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_TEST_TYPE_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_USER_ID_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.AUTH_USER_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_USER_RESTRICT_LIST_FUNCTION;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_AUTH_USER_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_USER_RESTRICT_LIST_FUNCTION;
 
 @Component
@@ -51,6 +57,29 @@ public class UserDAOImpl implements UserDAO {
             userRestrictListResponses.add(UserRestrictListResponse.build(fieldNumberOfUserRestrictListMap));
         }
         return userRestrictListResponses;
+    }
+
+    @Override
+    @Transactional
+    public AuthUserResponse authUser(AuthUserRequest authUserRequest) {
+        StoredProcedureQuery query = entityManager
+                .createStoredProcedureQuery(AUTH_USER_FUNCTION)
+                .registerStoredProcedureParameter(IN_LOGIN_FIELD, String.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_PASSWORD_FIELD, String.class, ParameterMode.IN)
+
+                .setParameter(IN_LOGIN_FIELD, authUserRequest.getLogin())
+                .setParameter(IN_PASSWORD_FIELD, authUserRequest.getPassword());
+
+        query.execute();
+        List<Object[]> queryResultTable = query.getResultList();
+        Object[] tableRow = queryResultTable.get(0);
+
+        Map<Integer, Object> fieldNumberOfAuthUserResponseMap = new HashMap<>();
+        for (int numOfColumn = 0; numOfColumn < NUMBER_OF_RETURN_FIELDS_OF_AUTH_USER_FUNCTION; numOfColumn++) {
+            fieldNumberOfAuthUserResponseMap.put(numOfColumn + 1, tableRow[numOfColumn]);
+        }
+
+        return AuthUserResponse.build(fieldNumberOfAuthUserResponseMap);
     }
 
 }

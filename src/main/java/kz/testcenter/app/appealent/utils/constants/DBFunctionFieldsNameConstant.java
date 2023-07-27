@@ -28,5 +28,7 @@ public class DBFunctionFieldsNameConstant {
     public static final String IN_ORG_TYPE_ID_FIELD = "in_org_type_id";
     public static final String IN_IGNORE_WARNING_FIELD = "in_ignore_warning";
     public static final String IN_IGNORE_NOT_SUITABLE_FIELD = "in_ignore_not_suitable";
+    public static final String IN_LOGIN_FIELD = "in_login";
+    public static final String IN_PASSWORD_FIELD = "in_password";
 
 }
