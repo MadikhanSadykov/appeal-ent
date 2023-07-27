@@ -1,7 +1,7 @@
 package kz.testcenter.app.appealent.dao.impl;
 
 import kz.testcenter.app.appealent.dao.StudentDAO;
-import kz.testcenter.app.appealent.model.functions.response.student.StudentInfoResponse;
+import kz.testcenter.app.appealent.model.functions.response.StudentInfoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

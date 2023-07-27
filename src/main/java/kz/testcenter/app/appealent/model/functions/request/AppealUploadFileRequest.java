@@ -1,4 +1,4 @@
-package kz.testcenter.app.appealent.model.functions.request.appeal;
+package kz.testcenter.app.appealent.model.functions.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;

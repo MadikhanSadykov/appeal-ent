@@ -25,5 +25,6 @@ public class DBFunctionNameConstant {
     public static final String GET_SUBJECT_LIST_FUNCTION = "public.fn_get_subject_list";
     public static final String GET_TEST_TYPE_LIST_FOR_APPEAL_FUNCTION = "public.fn_get_test_type_list_for_appeal";
     public static final String GET_UPLOAD_FILE_DATA_BY_ID_FUNCTION = "public.fn_get_upload_file_data_by_id";
+    public static final String GET_USER_RESTRICT_LIST_FUNCTION = "public.fn_get_user_restrict_list";
 
 }
