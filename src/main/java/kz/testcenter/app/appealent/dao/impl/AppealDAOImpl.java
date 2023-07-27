@@ -5,6 +5,7 @@ import kz.testcenter.app.appealent.model.functions.request.AppealByIDRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealListRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealResultDescriptionFileRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealResultDescriptionListByQuestionIDRequest;
+import kz.testcenter.app.appealent.model.functions.request.AppealSetToExpertRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealStatisticByQuestionIDRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealStatisticByQuestionRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealUploadFileRequest;
@@ -41,6 +42,7 @@ import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameCo
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_EXPERT_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_FILE_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_FINISH_DATE_FILED;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_IGNORE_NOT_SUITABLE_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_IGNORE_WARNING_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_LANG_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_MID_FIELD;
@@ -53,6 +55,7 @@ import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameCo
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_TEST_TYPE_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_USER_ROLE_TYPE_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.APPEAL_RETURN_TO_EXPERT_FROM_ALL_STATUS_FUNCTION;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.APPEAL_SET_TO_EXPERT_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_BY_ID_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_LIST_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_APPEAL_RESULT_DESCRIPTION_FILE_BY_FILE_ID_FUNCTION;
@@ -444,4 +447,29 @@ public class AppealDAOImpl implements AppealDAO {
         query.executeUpdate();
     }
 
+    @Override
+    @Transactional
+    public void setToExpert(AppealSetToExpertRequest appealSetToExpertRequest) {
+        StoredProcedureQuery query = entityManager
+                .createStoredProcedureQuery(APPEAL_SET_TO_EXPERT_FUNCTION)
+                .registerStoredProcedureParameter(IN_APPEAL_ID_FIELD, Integer.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_APPEAL_TYPE_ID_FIELD, Short.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_TEST_SERVER_ID_FIELD, Short.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_LANG_ID_FIELD, Short.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_SUBJECT_ID_FIELD, Short.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_TEST_TYPE_ID_FIELD, Short.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_EXPERT_ID_FIELD, Integer.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_IGNORE_NOT_SUITABLE_FIELD, Short.class, ParameterMode.IN)
+
+                .setParameter(IN_APPEAL_ID_FIELD, appealSetToExpertRequest.getAppealId())
+                .setParameter(IN_APPEAL_TYPE_ID_FIELD, appealSetToExpertRequest.getAppealTypeId())
+                .setParameter(IN_TEST_SERVER_ID_FIELD, appealSetToExpertRequest.getTestServerId())
+                .setParameter(IN_LANG_ID_FIELD, appealSetToExpertRequest.getLangId())
+                .setParameter(IN_SUBJECT_ID_FIELD, appealSetToExpertRequest.getSubjectId())
+                .setParameter(IN_TEST_TYPE_ID_FIELD, appealSetToExpertRequest.getTestTypeId())
+                .setParameter(IN_EXPERT_ID_FIELD, appealSetToExpertRequest.getExpertId())
+                .setParameter(IN_IGNORE_NOT_SUITABLE_FIELD, appealSetToExpertRequest.getIgnoreNotSuitable());
+
+        query.executeUpdate();
+    }
 }

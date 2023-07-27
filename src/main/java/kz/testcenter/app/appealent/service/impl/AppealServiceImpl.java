@@ -5,6 +5,7 @@ import kz.testcenter.app.appealent.model.functions.request.AppealByIDRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealListRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealResultDescriptionFileRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealResultDescriptionListByQuestionIDRequest;
+import kz.testcenter.app.appealent.model.functions.request.AppealSetToExpertRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealStatisticByQuestionIDRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealStatisticByQuestionRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealUploadFileRequest;
@@ -93,6 +94,11 @@ public class AppealServiceImpl implements AppealService {
     @Override
     public void returnToExpertFromAllStatus(Integer appealId, Short appealTypeId, Short testServerId, Short ignoreWarning) {
         appealDAO.returnToExpertFromAllStatus(appealId, appealTypeId, testServerId, ignoreWarning);
+    }
+
+    @Override
+    public void setToExpert(AppealSetToExpertRequest appealSetToExpertRequest) {
+        appealDAO.setToExpert(appealSetToExpertRequest);
     }
 
 }

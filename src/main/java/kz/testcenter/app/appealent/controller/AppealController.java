@@ -8,6 +8,7 @@ import kz.testcenter.app.appealent.model.functions.request.AppealByIDRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealListRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealResultDescriptionFileRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealResultDescriptionListByQuestionIDRequest;
+import kz.testcenter.app.appealent.model.functions.request.AppealSetToExpertRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealStatisticByQuestionIDRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealStatisticByQuestionRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealUploadFileRequest;
@@ -184,6 +185,13 @@ public class AppealController {
             @PathVariable(name = "testServerId") Short testServerId,
             @PathVariable(name = "ignoreWarning") Short ignoreWarning) {
         appealService.returnToExpertFromAllStatus(appealId, appealTypeId, testServerId, ignoreWarning);
+    }
+
+    @Operation(summary = "Назначить аппеляцию на эксперта", description = "fn_appeal_set_to_expert")
+    @PutMapping("/set/to/expert")
+    @ResponseStatus(HttpStatus.OK)
+    public void setToExpert(@RequestBody AppealSetToExpertRequest appealSetToExpertRequest) {
+        appealService.setToExpert(appealSetToExpertRequest);
     }
 
 }

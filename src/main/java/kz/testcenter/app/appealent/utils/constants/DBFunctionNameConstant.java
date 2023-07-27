@@ -28,5 +28,6 @@ public class DBFunctionNameConstant {
     public static final String GET_USER_RESTRICT_LIST_FUNCTION = "public.fn_get_user_restrict_list";
     public static final String APPEAL_RETURN_TO_EXPERT_FROM_ALL_STATUS_FUNCTION =
             "public.fn_appeal_return_to_expert_from_all_status";
+    public static final String APPEAL_SET_TO_EXPERT_FUNCTION = "public.fn_appeal_set_to_expert";
 
 }
