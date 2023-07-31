@@ -37,5 +37,8 @@ public class DBFunctionFieldsNameConstant {
     public static final String IN_DESCR_FIELD = "in_descr";
     public static final String IN_OBJECT_ID_FIELD = "in_object_id";
     public static final String IN_IP_ADDRESS_FIELD = "in_ip_address";
+    public static final String IN_APP_VERSION_FIELD = "in_app_version";
+    public static final String IN_PARAMVALUE_FIELD = "in_paramvalue";
+    public static final String IN_APPEAL_RESULT_DESCRIPTION_FIELD = "in_appeal_result_description";
 
 }

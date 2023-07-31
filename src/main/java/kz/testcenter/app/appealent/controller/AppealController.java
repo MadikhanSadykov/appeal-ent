@@ -12,6 +12,7 @@ import kz.testcenter.app.appealent.model.functions.request.AppealSetToExpertRequ
 import kz.testcenter.app.appealent.model.functions.request.AppealStatisticByQuestionIDRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealStatisticByQuestionRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealUploadFileRequest;
+import kz.testcenter.app.appealent.model.functions.request.SetAppealResultDescriptionRequest;
 import kz.testcenter.app.appealent.model.functions.response.AppealByIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealListResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionFileByIDResponse;
@@ -225,6 +226,17 @@ public class AppealController {
                 appealService.numericAnswerToLetter(answerOrder),
                 HttpStatus.OK
         );
+    }
+
+    @Operation(summary = "Сохранение содержания  пояснения в html формате",
+            description = "fn_set_appeal_result_description")
+    @PutMapping("/result/desc")
+    public ResponseEntity<Short> setAppealResultDescription(
+            @RequestBody SetAppealResultDescriptionRequest request,
+            @RequestParam(name = "log") Short log) {
+        return ResponseEntity
+                .ok()
+                .body(appealService.setAppealResultDescription(request));
     }
 
 }

@@ -32,5 +32,7 @@ public class DBFunctionNameConstant {
     public static final String AUTH_USER_FUNCTION = "public.fn_auth_user";
     public static final String NUMERIC_ANSWER_TO_LETTER_FUNCTION = "public.fn_numeric_answer_to_letter";
     public static final String WRITE_LOG_FUNCTION = "desktop.fn_write_log";
+    public static final String COMPARE_APP_VERSION_FUNCTION = "desktop.fn_compare_app_version";
+    public static final String SET_APPEAL_RESULT_DESCRIPTION_FUNCTION = "public.fn_set_appeal_result_description";
 
 }

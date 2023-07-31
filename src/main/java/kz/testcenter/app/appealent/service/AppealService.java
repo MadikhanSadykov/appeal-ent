@@ -8,6 +8,7 @@ import kz.testcenter.app.appealent.model.functions.request.AppealSetToExpertRequ
 import kz.testcenter.app.appealent.model.functions.request.AppealStatisticByQuestionIDRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealStatisticByQuestionRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealUploadFileRequest;
+import kz.testcenter.app.appealent.model.functions.request.SetAppealResultDescriptionRequest;
 import kz.testcenter.app.appealent.model.functions.response.AppealByIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealListResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionFileByIDResponse;
@@ -57,5 +58,7 @@ public interface AppealService {
     Short setToExpert(AppealSetToExpertRequest appealSetToExpertRequest);
 
     String numericAnswerToLetter(Short answerOrder);
+
+    Short setAppealResultDescription(SetAppealResultDescriptionRequest request);
 
 }
