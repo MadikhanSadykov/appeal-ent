@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -26,7 +27,8 @@ public class StudentController {
     @GetMapping("/info/by/{testTypeId}/{iin}")
     public ResponseEntity<List<StudentInfoResponse>> getStudentInfoByIIN(
             @PathVariable(name = "testTypeId") Short testTypeId,
-            @PathVariable(name = "iin") String iin) {
+            @PathVariable(name = "iin") String iin,
+            @RequestParam(name = "log", defaultValue = "0") Short log) {
         return new ResponseEntity<>(
                 studentService.getStudentInfo(testTypeId, iin),
                 HttpStatus.OK

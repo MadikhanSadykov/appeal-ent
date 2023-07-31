@@ -31,13 +31,15 @@ public class AuthUserResponse {
     @JsonProperty("out_result_login")
     private Integer resultLogin;
 
+    private String token;
+
     public static AuthUserResponse build(Map<Integer, Object> fieldNumberOfAuthUserResponseMap) {
-        return new AuthUserResponse(
-                (Integer) fieldNumberOfAuthUserResponseMap.get(1),
-                (String) fieldNumberOfAuthUserResponseMap.get(2),
-                (Integer) fieldNumberOfAuthUserResponseMap.get(3),
-                (Integer) fieldNumberOfAuthUserResponseMap.get(4)
-        );
+        return AuthUserResponse.builder()
+                .userId((Integer) fieldNumberOfAuthUserResponseMap.get(1))
+                .username((String) fieldNumberOfAuthUserResponseMap.get(2))
+                .userStatusId((Integer) fieldNumberOfAuthUserResponseMap.get(3))
+                .resultLogin((Integer) fieldNumberOfAuthUserResponseMap.get(4))
+                .build();
     }
 
 }

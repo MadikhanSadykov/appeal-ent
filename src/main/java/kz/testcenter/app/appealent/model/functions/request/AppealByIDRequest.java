@@ -33,4 +33,7 @@ public class AppealByIDRequest {
     @JsonProperty("in_crypt_key")
     private String cryptKey;
 
+    @JsonProperty("log")
+    private WriteLogRequest writeLogRequest;
+
 }

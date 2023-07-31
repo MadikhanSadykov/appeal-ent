@@ -1,5 +1,7 @@
 package kz.testcenter.app.appealent.utils.constants;
 
+import java.util.Stack;
+
 public class DBFunctionFieldsNameConstant {
 
     public static final String IN_TEST_TYPE_ID_FIELD = "in_test_type_id";
@@ -31,5 +33,9 @@ public class DBFunctionFieldsNameConstant {
     public static final String IN_LOGIN_FIELD = "in_login";
     public static final String IN_PASSWORD_FIELD = "in_password";
     public static final String IN_ANSWER_ORDER_FIELD = "in_answer_order";
+    public static final String IN_ACTION_TYPE_ID_FIELD = "in_action_type_id";
+    public static final String IN_DESCR_FIELD = "in_descr";
+    public static final String IN_OBJECT_ID_FIELD = "in_object_id";
+    public static final String IN_IP_ADDRESS_FIELD = "in_ip_address";
 
 }

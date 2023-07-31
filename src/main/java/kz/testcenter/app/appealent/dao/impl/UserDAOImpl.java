@@ -9,9 +9,11 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.ParameterMode;
+import javax.persistence.Query;
 import javax.persistence.StoredProcedureQuery;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,13 +64,16 @@ public class UserDAOImpl implements UserDAO {
     @Override
     @Transactional
     public AuthUserResponse authUser(AuthUserRequest authUserRequest) {
+        // todo: remove - delegate encoding to frontend
+        String passwordBase64 = Base64.getEncoder().encodeToString(authUserRequest.getPassword().getBytes());
+
         StoredProcedureQuery query = entityManager
                 .createStoredProcedureQuery(AUTH_USER_FUNCTION)
                 .registerStoredProcedureParameter(IN_LOGIN_FIELD, String.class, ParameterMode.IN)
                 .registerStoredProcedureParameter(IN_PASSWORD_FIELD, String.class, ParameterMode.IN)
 
                 .setParameter(IN_LOGIN_FIELD, authUserRequest.getLogin())
-                .setParameter(IN_PASSWORD_FIELD, authUserRequest.getPassword());
+                .setParameter(IN_PASSWORD_FIELD, passwordBase64);
 
         query.execute();
         List<Object[]> queryResultTable = query.getResultList();
@@ -80,6 +85,16 @@ public class UserDAOImpl implements UserDAO {
         }
 
         return AuthUserResponse.build(fieldNumberOfAuthUserResponseMap);
+    }
+
+    @Override
+    public String getRoleNameByUserId(Integer userId) {
+        Query query = entityManager.createNativeQuery("select r.code from ref.user_role_type as r\n" +
+                "where id in (\n" +
+                "    select res.user_role_type_id from public.user_restrict as res\n" +
+                "    where res.user_id = :userId);");
+        query.setParameter("userId", userId);
+        return (String) query.getSingleResult();
     }
 
 }

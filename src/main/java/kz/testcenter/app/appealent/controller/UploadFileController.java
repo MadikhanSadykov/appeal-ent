@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -27,7 +28,8 @@ public class UploadFileController {
     @GetMapping("/by/{fileId}/{testServerId}")
     public ResponseEntity<Resource> getUploadFileDataById(
             @PathVariable(name = "fileId") Integer fileId,
-            @PathVariable(name = "testServerId") Short testServerId) {
+            @PathVariable(name = "testServerId") Short testServerId,
+            @RequestParam(name = "log", defaultValue = "0") Short log) {
         ByteArrayResource resource = new ByteArrayResource(
                 uploadFileService.getUploadFileDataById(fileId, testServerId)
         );

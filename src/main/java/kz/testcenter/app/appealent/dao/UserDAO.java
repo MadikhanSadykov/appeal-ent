@@ -12,4 +12,6 @@ public interface UserDAO {
 
     AuthUserResponse authUser(AuthUserRequest authUserRequest);
 
+    String getRoleNameByUserId(Integer userId);
+
 }

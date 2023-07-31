@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -24,7 +25,9 @@ public class ExpertController {
             description = "Обязательны все поля")
     @GetMapping("/subjects/by/{userId}/and/{testTypeId}")
     public ResponseEntity<List<ExpertSubjectListResponse>> getExpertSubjectList(
-            @PathVariable(name = "userId") Integer userId, @PathVariable(name = "testTypeId") Short testTypeId) {
+            @PathVariable(name = "userId") Integer userId,
+            @PathVariable(name = "testTypeId") Short testTypeId,
+            @RequestParam(name = "log", defaultValue = "0") Short log) {
         return new ResponseEntity<>(
                 expertService.getExpertSubjectList(userId, testTypeId),
                 HttpStatus.OK

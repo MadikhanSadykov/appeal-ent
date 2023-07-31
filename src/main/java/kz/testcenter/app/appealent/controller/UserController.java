@@ -1,8 +1,6 @@
 package kz.testcenter.app.appealent.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import kz.testcenter.app.appealent.model.functions.request.AuthUserRequest;
-import kz.testcenter.app.appealent.model.functions.response.AuthUserResponse;
 import kz.testcenter.app.appealent.model.functions.response.UserRestrictListResponse;
 import kz.testcenter.app.appealent.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -10,8 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -29,19 +27,10 @@ public class UserController {
     public ResponseEntity<List<UserRestrictListResponse>> getUserRestrictList(
             @PathVariable(name = "userId") Integer userId,
             @PathVariable(name = "testTypeId") Short testTypeId,
-            @PathVariable(name = "orgTypeId") Short orgTypeId) {
+            @PathVariable(name = "orgTypeId") Short orgTypeId,
+            @RequestParam(name = "log", defaultValue = "0") Short log) {
         return new ResponseEntity<>(
                 userService.getUserRestrictList(userId, testTypeId, orgTypeId),
-                HttpStatus.OK
-        );
-    }
-
-    // todo: функция sql - user_status_id не найден в таблице
-    @Operation(summary = "Аутентифицировать пользователя", description = "fn_auth_user")
-    @GetMapping("/auth")
-    public ResponseEntity<AuthUserResponse> authUser(@RequestBody AuthUserRequest authUserRequest) {
-        return new ResponseEntity<>(
-                userService.authUser(authUserRequest),
                 HttpStatus.OK
         );
     }

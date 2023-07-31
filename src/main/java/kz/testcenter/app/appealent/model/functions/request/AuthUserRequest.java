@@ -16,11 +16,9 @@ import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameCo
 public class AuthUserRequest {
 
     // 1
-    @JsonProperty(IN_LOGIN_FIELD)
     private String login;
 
     // 2
-    @JsonProperty(IN_PASSWORD_FIELD)
     private String password;
 
 }

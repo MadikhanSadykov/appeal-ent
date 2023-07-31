@@ -26,12 +26,13 @@ import kz.testcenter.app.appealent.service.AppealService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -53,8 +54,11 @@ public class AppealController {
             @ApiResponse(responseCode = "404", description = "Не найдено"),
             @ApiResponse(responseCode = "500", description = "Не валидные введеные данные / не верный формат данных")
     })
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     @GetMapping("/list")
-    public ResponseEntity<List<AppealListResponse>> getAppealList(@RequestBody AppealListRequest appealListRequest) {
+    public ResponseEntity<List<AppealListResponse>> getAppealList(
+            @RequestBody AppealListRequest appealListRequest,
+            @RequestParam(name = "log", defaultValue = "0") Short log) {
         return new ResponseEntity<>(
                 appealService.getAppealList(appealListRequest),
                 HttpStatus.OK);
@@ -65,7 +69,9 @@ public class AppealController {
                     "! Если остальные поля не назначены, то передать в них - null !\n" +
                     "Возвращает таблицу вопросов аппеляции\n")
     @GetMapping("/by/id")
-    public ResponseEntity<List<AppealByIDResponse>> getAppealById(@RequestBody AppealByIDRequest appealByIDRequest) {
+    public ResponseEntity<List<AppealByIDResponse>> getAppealById(
+            @RequestBody AppealByIDRequest appealByIDRequest,
+            @RequestParam(name = "log", defaultValue = "0") Short log) {
         return new ResponseEntity<>(
                 appealService.getAppealById(appealByIDRequest),
                 HttpStatus.OK);
@@ -76,7 +82,8 @@ public class AppealController {
             "Обязательны все поля")
     @GetMapping("/result/desc/file")
     public ResponseEntity<List<AppealResultDescriptionFileResponse>> getAppealResultDescriptionFile(
-            @RequestBody AppealResultDescriptionFileRequest resultDescriptionFileRequest) {
+            @RequestBody AppealResultDescriptionFileRequest resultDescriptionFileRequest,
+            @RequestParam(name = "log", defaultValue = "0") Short log) {
         return new ResponseEntity<>(
                 appealService.getAppealResultDescriptionFile(resultDescriptionFileRequest),
                 HttpStatus.OK);
@@ -87,7 +94,8 @@ public class AppealController {
     @GetMapping("/result/desc/file/{id}")
     public ResponseEntity<AppealResultDescriptionFileByIDResponse> getAppealResultDescriptionFileById(
             @Schema(name = "File ID", example = "1", required = true)
-            @PathVariable("id") Integer id) {
+            @PathVariable("id") Integer id,
+            @RequestParam(name = "log", defaultValue = "0") Short log) {
         return new ResponseEntity<>(
                 appealService.getAppealResultDescriptionFileById(id),
                 HttpStatus.OK
@@ -98,7 +106,8 @@ public class AppealController {
             description = "Обязательны все поля")
     @GetMapping("/result/desc/list/by/question/id")
     public ResponseEntity<List<AppealResultDescriptionListByQuestionIDResponse>> getAppealResultDescriptionListByQuestionId(
-            @RequestBody AppealResultDescriptionListByQuestionIDRequest resultDescriptionListByQuestionIDRequest) {
+            @RequestBody AppealResultDescriptionListByQuestionIDRequest resultDescriptionListByQuestionIDRequest,
+            @RequestParam(name = "log", defaultValue = "0") Short log) {
         return new ResponseEntity<>(
                 appealService.getAppealResultDescriptionListByQuestionId(resultDescriptionListByQuestionIDRequest),
                 HttpStatus.OK
@@ -109,7 +118,8 @@ public class AppealController {
             description = "Обязательны все поля")
     @GetMapping("/statistic/by/question")
     public ResponseEntity<List<AppealStatisticByQuestionResponse>> getAppealStatisticByQuestion(
-            @RequestBody AppealStatisticByQuestionRequest appealStatisticByQuestionRequest) {
+            @RequestBody AppealStatisticByQuestionRequest appealStatisticByQuestionRequest,
+            @RequestParam(name = "log", defaultValue = "0") Short log) {
         return new ResponseEntity<>(
                 appealService.getAppealStatisticByQuestion(appealStatisticByQuestionRequest),
                 HttpStatus.OK
@@ -120,7 +130,8 @@ public class AppealController {
             description = "Обязательны все поля")
     @GetMapping("/statistic/by/question/id")
     public ResponseEntity<List<AppealStatisticByQuestionIDResponse>> getAppealStatisticByQuestionId(
-            @RequestBody AppealStatisticByQuestionIDRequest appealStatisticByQuestionIDRequest) {
+            @RequestBody AppealStatisticByQuestionIDRequest appealStatisticByQuestionIDRequest,
+            @RequestParam(name = "log", defaultValue = "0") Short log) {
         return new ResponseEntity<>(
                 appealService.getAppealStatisticByQuestionID(appealStatisticByQuestionIDRequest),
                 HttpStatus.OK
@@ -131,7 +142,8 @@ public class AppealController {
             description = "Обязательны все поля")
     @GetMapping("/upload/file")
     public ResponseEntity<List<AppealUploadFileResponse>> getAppealUploadFile(
-            @RequestBody AppealUploadFileRequest appealUploadFileRequest) {
+            @RequestBody AppealUploadFileRequest appealUploadFileRequest,
+            @RequestParam(name = "log", defaultValue = "0") Short log) {
         return new ResponseEntity<>(
                 appealService.getAppealUploadFile(appealUploadFileRequest),
                 HttpStatus.OK
@@ -144,7 +156,8 @@ public class AppealController {
     public ResponseEntity<String> getHtmlAppealResultDescription(
             @PathVariable(name = "appealId") Integer appealId,
             @PathVariable(name = "appealTypeId") Short appealTypeId,
-            @PathVariable(name = "testServerId") Short testServerId) {
+            @PathVariable(name = "testServerId") Short testServerId,
+            @RequestParam(name = "log", defaultValue = "0") Short log) {
         return new ResponseEntity<>(
                 appealService.getHtmlAppealResultDescription(appealId, appealTypeId, testServerId),
                 HttpStatus.OK
@@ -155,7 +168,8 @@ public class AppealController {
             description = "Обязательны все поля")
     @GetMapping("/student/by/{studentTestId}")
     public ResponseEntity<List<AppealStudentResponse>> getStudentAppeal(
-            @PathVariable(name = "studentTestId") Integer studentTestId) {
+            @PathVariable(name = "studentTestId") Integer studentTestId,
+            @RequestParam(name = "log", defaultValue = "0") Short log) {
         return new ResponseEntity<>(
                 appealService.getAppealStudent(studentTestId),
                 HttpStatus.OK
@@ -168,7 +182,8 @@ public class AppealController {
     public ResponseEntity<List<AppealStudentUploadFileResponse>> getAppealStudentUploadFile(
             @PathVariable(name = "studentTestId") Integer studentTestId,
             @PathVariable(name = "appealTypeId") Short appealTypeId,
-            @PathVariable(name = "testServerId") Short testServerId) {
+            @PathVariable(name = "testServerId") Short testServerId,
+            @RequestParam(name = "log", defaultValue = "0") Short log) {
         return new ResponseEntity<>(
                 appealService.getAppealStudentUploadFile(studentTestId, appealTypeId, testServerId),
                 HttpStatus.OK
@@ -182,7 +197,8 @@ public class AppealController {
             @PathVariable(name = "appealId") Integer appealId,
             @PathVariable(name = "appealTypeId") Short appealTypeId,
             @PathVariable(name = "testServerId") Short testServerId,
-            @PathVariable(name = "ignoreWarning") Short ignoreWarning) {
+            @PathVariable(name = "ignoreWarning") Short ignoreWarning,
+            @RequestParam(name = "log", defaultValue = "0") Short log) {
         return new ResponseEntity<>(
                 appealService.returnToExpertFromAllStatus(appealId, appealTypeId, testServerId, ignoreWarning),
                 HttpStatus.OK
@@ -191,7 +207,9 @@ public class AppealController {
 
     @Operation(summary = "Назначить аппеляцию на эксперта", description = "fn_appeal_set_to_expert")
     @PutMapping("/set/to/expert")
-    public ResponseEntity<Short> setToExpert(@RequestBody AppealSetToExpertRequest appealSetToExpertRequest) {
+    public ResponseEntity<Short> setToExpert(
+            @RequestBody AppealSetToExpertRequest appealSetToExpertRequest,
+            @RequestParam(name = "log", defaultValue = "0") Short log) {
         return new ResponseEntity<>(
                 appealService.setToExpert(appealSetToExpertRequest),
                 HttpStatus.OK
@@ -199,8 +217,10 @@ public class AppealController {
     }
 
     @Operation(summary = "Цифровое обозначение ответа в букву", description = "fn_numeric_answer_to_letter")
-    @GetMapping("/numericAnswer/to/letter")
-    public ResponseEntity<String> numericAnswerToLetter(Short answerOrder) {
+    @GetMapping("/numericAnswer/to/letter/{answerOrder}")
+    public ResponseEntity<String> numericAnswerToLetter(
+            @PathVariable(name = "answerOrder") Short answerOrder,
+            @RequestParam(name = "log", defaultValue = "0") Short log) {
         return new ResponseEntity<>(
                 appealService.numericAnswerToLetter(answerOrder),
                 HttpStatus.OK
