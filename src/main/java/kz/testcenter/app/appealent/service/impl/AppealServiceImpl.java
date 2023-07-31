@@ -11,6 +11,7 @@ import kz.testcenter.app.appealent.model.functions.request.AppealStatisticByQues
 import kz.testcenter.app.appealent.model.functions.request.AppealUploadFileRequest;
 import kz.testcenter.app.appealent.model.functions.request.SetAppealResultDescriptionFileRequest;
 import kz.testcenter.app.appealent.model.functions.request.SetAppealResultDescriptionRequest;
+import kz.testcenter.app.appealent.model.functions.request.SetExpertPrevResultRequest;
 import kz.testcenter.app.appealent.model.functions.response.AppealByIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealListResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionFileByIDResponse;
@@ -117,4 +118,5 @@ public class AppealServiceImpl implements AppealService {
     public Short setAppealResultDescriptionFile(SetAppealResultDescriptionFileRequest request) {
         return appealDAO.setAppealResultDescriptionFile(request);
     }
+
 }

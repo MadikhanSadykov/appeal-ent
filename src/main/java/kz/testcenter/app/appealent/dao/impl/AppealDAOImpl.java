@@ -11,6 +11,7 @@ import kz.testcenter.app.appealent.model.functions.request.AppealStatisticByQues
 import kz.testcenter.app.appealent.model.functions.request.AppealUploadFileRequest;
 import kz.testcenter.app.appealent.model.functions.request.SetAppealResultDescriptionFileRequest;
 import kz.testcenter.app.appealent.model.functions.request.SetAppealResultDescriptionRequest;
+import kz.testcenter.app.appealent.model.functions.request.SetExpertPrevResultRequest;
 import kz.testcenter.app.appealent.model.functions.response.AppealByIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealListResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionFileByIDResponse;
@@ -45,6 +46,9 @@ import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameCo
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_COMMISSION_MEMBER_TYPE_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_CRYPT_KEY_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_END_DATE_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_EXPERT_APPEAL_PREV_APPEAL_SCORE_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_EXPERT_APPEAL_PREV_RESULT_TYPE_ID_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_EXPERT_APPEAL_REASON_TYPE_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_EXPERT_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_FILE_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_FINISH_DATE_FILED;
@@ -76,6 +80,7 @@ import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.NUMERIC_ANSWER_TO_LETTER_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.SET_APPEAL_RESULT_DESCRIPTION_FILE_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.SET_APPEAL_RESULT_DESCRIPTION_FUNCTION;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.SET_EXPERT_PREV_RESULT_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_BY_ID_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_LIST_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_RESULT_DESCRIPTION_FILE_BY_FILE_ID_FUNCTION;
@@ -536,5 +541,5 @@ public class AppealDAOImpl implements AppealDAO {
         query.executeUpdate();
         return (Short) query.getSingleResult();
     }
-    
+
 }

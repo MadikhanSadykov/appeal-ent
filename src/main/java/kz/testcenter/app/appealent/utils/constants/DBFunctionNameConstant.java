@@ -36,5 +36,6 @@ public class DBFunctionNameConstant {
     public static final String SET_APPEAL_RESULT_DESCRIPTION_FUNCTION = "public.fn_set_appeal_result_description";
     public static final String SET_APPEAL_RESULT_DESCRIPTION_FILE_FUNCTION =
             "public.fn_set_appeal_result_description_file";
+    public static final String SET_EXPERT_PREV_RESULT_FUNCTION = "public.fn_set_expert_prev_result";
 
 }
