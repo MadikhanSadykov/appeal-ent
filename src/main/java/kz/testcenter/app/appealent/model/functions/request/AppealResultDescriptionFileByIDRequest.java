@@ -13,9 +13,12 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AppealResultDescriptionFileByIDRequest {
 
-    //0
+    // 1
     @Schema(name = "File ID", example = "1", required = true)
     @JsonProperty("in_file_id")
     private Integer fileId;
+
+    @JsonProperty("log")
+    private WriteLogRequest writeLogRequest;
 
 }

@@ -40,4 +40,7 @@ public class SetExpertPrevResultRequest {
     @JsonProperty("in_expert_appeal_prev_appeal_score")
     private Short expertAppealPrevAppealScore;
 
+    @JsonProperty("log")
+    private WriteLogRequest writeLogRequest;
+
 }

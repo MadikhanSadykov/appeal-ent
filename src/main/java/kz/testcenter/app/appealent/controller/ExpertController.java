@@ -2,6 +2,7 @@ package kz.testcenter.app.appealent.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import kz.testcenter.app.appealent.model.functions.request.SetExpertPrevResultRequest;
+import kz.testcenter.app.appealent.model.functions.request.SetExpertResultRequest;
 import kz.testcenter.app.appealent.model.functions.response.ExpertSubjectListResponse;
 import kz.testcenter.app.appealent.service.ExpertService;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +47,17 @@ public class ExpertController {
         return ResponseEntity
                 .ok()
                 .body(expertService.setExpertPrevResult(request));
+    }
+
+    @Operation(summary = "Сохранение  конечного решения эксперта",
+            description = "fn_set_expert_result")
+    @PutMapping("/result")
+    public ResponseEntity<Short> setExpertResult(
+            @RequestBody SetExpertResultRequest setExpertResultRequest,
+            @RequestParam(name = "log", defaultValue = "0") Short log) {
+        return ResponseEntity
+                .ok()
+                .body(expertService.setExpertResult(setExpertResultRequest));
     }
 
 }

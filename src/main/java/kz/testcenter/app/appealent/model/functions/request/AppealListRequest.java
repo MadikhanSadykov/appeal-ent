@@ -108,4 +108,7 @@ public class AppealListRequest {
     @JsonProperty("in_mid")
     private Integer mid;
 
+    @JsonProperty("log")
+    private WriteLogRequest writeLogRequest;
+
 }

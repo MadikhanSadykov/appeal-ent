@@ -30,4 +30,7 @@ public class AppealStatisticByQuestionRequest {
     @JsonProperty("in_finish_date")
     private Date finishDate;
 
+    @JsonProperty("log")
+    private WriteLogRequest writeLogRequest;
+
 }

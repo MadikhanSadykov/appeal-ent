@@ -44,4 +44,7 @@ public class SubjectListRequest {
     @JsonProperty(IN_CALL_FROM_ID_FIELD)
     private Short callFromId;
 
+    @JsonProperty("log")
+    private WriteLogRequest writeLogRequest;
+
 }

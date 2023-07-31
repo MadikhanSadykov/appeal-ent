@@ -2,6 +2,7 @@ package kz.testcenter.app.appealent.service.impl;
 
 import kz.testcenter.app.appealent.dao.ExpertDAO;
 import kz.testcenter.app.appealent.model.functions.request.SetExpertPrevResultRequest;
+import kz.testcenter.app.appealent.model.functions.request.SetExpertResultRequest;
 import kz.testcenter.app.appealent.model.functions.response.ExpertSubjectListResponse;
 import kz.testcenter.app.appealent.service.ExpertService;
 import lombok.RequiredArgsConstructor;
@@ -25,4 +26,8 @@ public class ExpertServiceImpl implements ExpertService {
         return expertDAO.setExpertPrevResult(setExpertPrevResultRequest);
     }
 
+    @Override
+    public Short setExpertResult(SetExpertResultRequest setExpertResultRequest) {
+        return expertDAO.setExpertResult(setExpertResultRequest);
+    }
 }

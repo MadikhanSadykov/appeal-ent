@@ -38,4 +38,7 @@ public class SetAppealResultDescriptionFileRequest {
     @JsonProperty("in_appeal_result_file")
     private Byte[] appealResultFile;
 
+    @JsonProperty("log")
+    private WriteLogRequest writeLogRequest;
+
 }

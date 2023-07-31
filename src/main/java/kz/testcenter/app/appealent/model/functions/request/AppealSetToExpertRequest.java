@@ -62,4 +62,7 @@ public class AppealSetToExpertRequest {
     @JsonProperty(IN_IGNORE_NOT_SUITABLE_FIELD)
     private Short ignoreNotSuitable;
 
+    @JsonProperty("log")
+    private WriteLogRequest writeLogRequest;
+
 }

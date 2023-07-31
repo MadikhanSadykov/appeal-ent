@@ -21,4 +21,7 @@ public class AuthUserRequest {
     // 2
     private String password;
 
+    @JsonProperty("log")
+    private WriteLogRequest writeLogRequest;
+
 }

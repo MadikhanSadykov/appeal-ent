@@ -35,4 +35,7 @@ public class AppealResultDescriptionListByQuestionIDRequest {
     @JsonProperty("in_original_question_id")
     private Long originalQuestionId;
 
+    @JsonProperty("log")
+    private WriteLogRequest writeLogRequest;
+
 }

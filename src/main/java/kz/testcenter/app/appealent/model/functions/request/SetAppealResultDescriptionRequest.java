@@ -33,4 +33,7 @@ public class SetAppealResultDescriptionRequest {
     @JsonProperty("in_appeal_result_description")
     private String appealResultDescription;
 
+    @JsonProperty("log")
+    private WriteLogRequest writeLogRequest;
+
 }
