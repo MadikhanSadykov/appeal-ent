@@ -46,5 +46,7 @@ public class DBFunctionFieldsNameConstant {
     public static final String IN_EXPERT_APPEAL_PREV_APPEAL_SCORE_FIELD = "in_expert_appeal_prev_appeal_score";
     public static final String IN_APPEAL_RESULT_TYPE_ID_FIELD = "in_appeal_result_type_id";
     public static final String IN_APPEAL_SCORE_FIELD = "in_appeal_score";
+    public static final String IN_ID_FIELD = "in_id";
+    public static final String IN_USER_STATUS_ID_FIELD = "in_user_status_id";
 
 }

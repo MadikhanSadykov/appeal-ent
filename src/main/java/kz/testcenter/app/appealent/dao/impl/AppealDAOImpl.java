@@ -521,6 +521,7 @@ public class AppealDAOImpl implements AppealDAO {
     }
 
     @Override
+    @Transactional
     public Short setAppealResultDescriptionFile(SetAppealResultDescriptionFileRequest request) {
         StoredProcedureQuery query = entityManager
                 .createStoredProcedureQuery(SET_APPEAL_RESULT_DESCRIPTION_FILE_FUNCTION)

@@ -68,6 +68,7 @@ public class ExpertDAOImpl implements ExpertDAO {
     }
 
     @Override
+    @Transactional
     public Short setExpertPrevResult(SetExpertPrevResultRequest setExpertPrevResultRequest) {
         StoredProcedureQuery query = entityManager
                 .createStoredProcedureQuery(SET_EXPERT_PREV_RESULT_FUNCTION)
@@ -92,6 +93,7 @@ public class ExpertDAOImpl implements ExpertDAO {
     }
 
     @Override
+    @Transactional
     public Short setExpertResult(SetExpertResultRequest setExpertResultRequest) {
         StoredProcedureQuery query = entityManager
                 .createStoredProcedureQuery(SET_EXPERT_RESULT_FUNCTION)
