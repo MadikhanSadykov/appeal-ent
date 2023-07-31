@@ -34,5 +34,7 @@ public class DBFunctionNameConstant {
     public static final String WRITE_LOG_FUNCTION = "desktop.fn_write_log";
     public static final String COMPARE_APP_VERSION_FUNCTION = "desktop.fn_compare_app_version";
     public static final String SET_APPEAL_RESULT_DESCRIPTION_FUNCTION = "public.fn_set_appeal_result_description";
+    public static final String SET_APPEAL_RESULT_DESCRIPTION_FILE_FUNCTION =
+            "public.fn_set_appeal_result_description_file";
 
 }

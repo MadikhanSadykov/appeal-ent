@@ -40,5 +40,6 @@ public class DBFunctionFieldsNameConstant {
     public static final String IN_APP_VERSION_FIELD = "in_app_version";
     public static final String IN_PARAMVALUE_FIELD = "in_paramvalue";
     public static final String IN_APPEAL_RESULT_DESCRIPTION_FIELD = "in_appeal_result_description";
+    public static final String IN_APPEAL_RESULT_FILE_FIELD = "in_appeal_result_file";
 
 }
