@@ -1,0 +1,31 @@
+stages:
+  - test
+  - deploy
+
+test-all:
+  stage: test
+  except:
+    - main
+  script:
+    - mvn clean install
+
+test-unit:
+  stage: test
+  only:
+    - main
+  script:
+    - mvn clean package
+    - cp target/appeal-ent*.jar appeal-ent-${CI_COMMIT_SHA}.jar
+  artifacts:
+    name: appeal-ent
+    expire_in: 1 week
+    paths:
+      - appeal-ent-${CI_COMMIT_SHA}.jar
+
+deploy:
+  stage: deploy
+  needs: [test-unit]
+  only:
+    - main
+  script:
+    - ls appeal-ent*.jar

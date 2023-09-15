@@ -1,6 +1,8 @@
 package kz.testcenter.app.appealent.dao.impl;
 
 import kz.testcenter.app.appealent.dao.ExpertDAO;
+import kz.testcenter.app.appealent.model.functions.request.SetExpertPrevResultRequest;
+import kz.testcenter.app.appealent.model.functions.request.SetExpertResultRequest;
 import kz.testcenter.app.appealent.model.functions.response.ExpertSubjectListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,9 +16,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_APPEAL_ID_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_APPEAL_RESULT_TYPE_ID_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_APPEAL_SCORE_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_APPEAL_TYPE_ID_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_EXPERT_APPEAL_PREV_APPEAL_SCORE_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_EXPERT_APPEAL_PREV_RESULT_TYPE_ID_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_EXPERT_APPEAL_REASON_TYPE_ID_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_EXPERT_ID_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_TEST_SERVER_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_TEST_TYPE_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_USER_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_EXPERT_SUBJECT_LIST_FUNCTION;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.SET_EXPERT_PREV_RESULT_FUNCTION;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.SET_EXPERT_RESULT_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_EXPERT_SUBJECT_LIST_FUNCTION;
 
 @Component
@@ -53,4 +66,53 @@ public class ExpertDAOImpl implements ExpertDAO {
         }
         return expertSubjectListResponses;
     }
+
+    @Override
+    @Transactional
+    public Short setExpertPrevResult(SetExpertPrevResultRequest setExpertPrevResultRequest) {
+        StoredProcedureQuery query = entityManager
+                .createStoredProcedureQuery(SET_EXPERT_PREV_RESULT_FUNCTION)
+                .registerStoredProcedureParameter(IN_APPEAL_ID_FIELD, Integer.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_APPEAL_TYPE_ID_FIELD, Short.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_TEST_SERVER_ID_FIELD, Short.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_EXPERT_ID_FIELD, Integer.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_EXPERT_APPEAL_REASON_TYPE_ID_FIELD, Short.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_EXPERT_APPEAL_PREV_RESULT_TYPE_ID_FIELD, Short.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_EXPERT_APPEAL_PREV_APPEAL_SCORE_FIELD, Short.class, ParameterMode.IN)
+
+                .setParameter(IN_APPEAL_ID_FIELD, setExpertPrevResultRequest.getAppealId())
+                .setParameter(IN_APPEAL_TYPE_ID_FIELD, setExpertPrevResultRequest.getAppealTypeId())
+                .setParameter(IN_TEST_SERVER_ID_FIELD, setExpertPrevResultRequest.getTestServerId())
+                .setParameter(IN_EXPERT_ID_FIELD, setExpertPrevResultRequest.getExpertId())
+                .setParameter(IN_EXPERT_APPEAL_REASON_TYPE_ID_FIELD, setExpertPrevResultRequest.getExpertAppealReasonTypeId())
+                .setParameter(IN_EXPERT_APPEAL_PREV_RESULT_TYPE_ID_FIELD, setExpertPrevResultRequest.getExpertAppealPrevResultTypeId())
+                .setParameter(IN_EXPERT_APPEAL_PREV_APPEAL_SCORE_FIELD, setExpertPrevResultRequest.getExpertAppealPrevAppealScore());
+
+        query.executeUpdate();
+        return (Short) query.getSingleResult();
+    }
+
+    @Override
+    @Transactional
+    public Short setExpertResult(SetExpertResultRequest setExpertResultRequest) {
+        StoredProcedureQuery query = entityManager
+                .createStoredProcedureQuery(SET_EXPERT_RESULT_FUNCTION)
+                .registerStoredProcedureParameter(IN_APPEAL_ID_FIELD, Integer.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_APPEAL_TYPE_ID_FIELD, Short.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_TEST_SERVER_ID_FIELD, Short.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_APPEAL_RESULT_TYPE_ID_FIELD, Short.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_APPEAL_SCORE_FIELD, Short.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_EXPERT_ID_FIELD, Integer.class, ParameterMode.IN)
+
+                .setParameter(IN_APPEAL_ID_FIELD, setExpertResultRequest.getAppealId())
+                .setParameter(IN_APPEAL_TYPE_ID_FIELD, setExpertResultRequest.getAppealTypeId())
+                .setParameter(IN_TEST_SERVER_ID_FIELD, setExpertResultRequest.getTestServerId())
+                .setParameter(IN_APPEAL_RESULT_TYPE_ID_FIELD, setExpertResultRequest.getAppealResultTypeId())
+                .setParameter(IN_APPEAL_SCORE_FIELD, setExpertResultRequest.getAppealScore())
+                .setParameter(IN_EXPERT_ID_FIELD, setExpertResultRequest.getExpertId());
+
+        query.executeUpdate();
+        return (Short) query.getSingleResult();
+    }
+
 }

@@ -2,6 +2,7 @@ package kz.testcenter.app.appealent.dao.impl;
 
 import kz.testcenter.app.appealent.dao.UserDAO;
 import kz.testcenter.app.appealent.model.functions.request.AuthUserRequest;
+import kz.testcenter.app.appealent.model.functions.request.UserChangePasswordRequest;
 import kz.testcenter.app.appealent.model.functions.response.AuthUserResponse;
 import kz.testcenter.app.appealent.model.functions.response.UserRestrictListResponse;
 import lombok.RequiredArgsConstructor;
@@ -18,13 +19,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_LOGIN_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_ORG_TYPE_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_PASSWORD_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_TEST_TYPE_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_USER_ID_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_USER_STATUS_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.AUTH_USER_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_USER_RESTRICT_LIST_FUNCTION;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.USER_CHANGE_PASSWORD_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_AUTH_USER_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_USER_RESTRICT_LIST_FUNCTION;
 
@@ -88,6 +92,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
+    @Transactional
     public String getRoleNameByUserId(Integer userId) {
         Query query = entityManager.createNativeQuery("select r.code from ref.user_role_type as r\n" +
                 "where id in (\n" +
@@ -95,6 +100,23 @@ public class UserDAOImpl implements UserDAO {
                 "    where res.user_id = :userId);");
         query.setParameter("userId", userId);
         return (String) query.getSingleResult();
+    }
+
+    @Override
+    @Transactional
+    public Short userChangePassword(UserChangePasswordRequest userChangePasswordRequest) {
+        StoredProcedureQuery query = entityManager
+                .createStoredProcedureQuery(USER_CHANGE_PASSWORD_FUNCTION)
+                .registerStoredProcedureParameter(IN_ID_FIELD, Integer.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_USER_STATUS_ID_FIELD, Short.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_PASSWORD_FIELD,String.class, ParameterMode.IN)
+
+                .setParameter(IN_ID_FIELD, userChangePasswordRequest.getId())
+                .setParameter(IN_USER_STATUS_ID_FIELD, userChangePasswordRequest.getUserStatusId())
+                .setParameter(IN_PASSWORD_FIELD, userChangePasswordRequest.getPassword());
+
+        query.executeUpdate();
+        return (Short) query.getSingleResult();
     }
 
 }

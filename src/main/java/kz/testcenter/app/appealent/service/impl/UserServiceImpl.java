@@ -2,6 +2,7 @@ package kz.testcenter.app.appealent.service.impl;
 
 import kz.testcenter.app.appealent.dao.UserDAO;
 import kz.testcenter.app.appealent.model.functions.request.AuthUserRequest;
+import kz.testcenter.app.appealent.model.functions.request.UserChangePasswordRequest;
 import kz.testcenter.app.appealent.model.functions.response.AuthUserResponse;
 import kz.testcenter.app.appealent.model.functions.response.UserRestrictListResponse;
 import kz.testcenter.app.appealent.model.publics.User;
@@ -52,4 +53,10 @@ public class UserServiceImpl implements UserService {
                 .token(jwtToken)
                 .build();
     }
+
+    @Override
+    public Short userChangePassword(UserChangePasswordRequest userChangePasswordRequest) {
+        return userDAO.userChangePassword(userChangePasswordRequest);
+    }
+
 }

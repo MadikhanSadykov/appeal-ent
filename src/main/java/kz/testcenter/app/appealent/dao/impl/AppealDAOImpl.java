@@ -9,7 +9,9 @@ import kz.testcenter.app.appealent.model.functions.request.AppealSetToExpertRequ
 import kz.testcenter.app.appealent.model.functions.request.AppealStatisticByQuestionIDRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealStatisticByQuestionRequest;
 import kz.testcenter.app.appealent.model.functions.request.AppealUploadFileRequest;
+import kz.testcenter.app.appealent.model.functions.request.SetAppealResultDescriptionFileRequest;
 import kz.testcenter.app.appealent.model.functions.request.SetAppealResultDescriptionRequest;
+import kz.testcenter.app.appealent.model.functions.request.SetExpertPrevResultRequest;
 import kz.testcenter.app.appealent.model.functions.response.AppealByIDResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealListResponse;
 import kz.testcenter.app.appealent.model.functions.response.AppealResultDescriptionFileByIDResponse;
@@ -28,6 +30,7 @@ import javax.persistence.ParameterMode;
 import javax.persistence.StoredProcedureQuery;
 import javax.transaction.Transactional;
 
+import java.sql.Blob;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,11 +40,15 @@ import java.util.Map;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_ANSWER_ORDER_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_APPEAL_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_APPEAL_RESULT_DESCRIPTION_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_APPEAL_RESULT_FILE_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_APPEAL_STATUS_TYPE_IDS_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_APPEAL_TYPE_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_COMMISSION_MEMBER_TYPE_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_CRYPT_KEY_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_END_DATE_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_EXPERT_APPEAL_PREV_APPEAL_SCORE_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_EXPERT_APPEAL_PREV_RESULT_TYPE_ID_FIELD;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_EXPERT_APPEAL_REASON_TYPE_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_EXPERT_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_FILE_ID_FIELD;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionFieldsNameConstant.IN_FINISH_DATE_FILED;
@@ -71,7 +78,9 @@ import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_STUDENT_APPEAL_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.GET_STUDENT_APPEAL_UPLOAD_FILE_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.NUMERIC_ANSWER_TO_LETTER_FUNCTION;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.SET_APPEAL_RESULT_DESCRIPTION_FILE_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.SET_APPEAL_RESULT_DESCRIPTION_FUNCTION;
+import static kz.testcenter.app.appealent.utils.constants.DBFunctionNameConstant.SET_EXPERT_PREV_RESULT_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_BY_ID_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_LIST_FUNCTION;
 import static kz.testcenter.app.appealent.utils.constants.DBFunctionNumberOfFieldsConstant.NUMBER_OF_RETURN_FIELDS_OF_GET_APPEAL_RESULT_DESCRIPTION_FILE_BY_FILE_ID_FUNCTION;
@@ -506,6 +515,29 @@ public class AppealDAOImpl implements AppealDAO {
                 .setParameter(IN_APPEAL_TYPE_ID_FIELD, request.getAppealTypeId())
                 .setParameter(IN_TEST_SERVER_ID_FIELD, request.getTestServerId())
                 .setParameter(IN_APPEAL_RESULT_DESCRIPTION_FIELD, request.getAppealResultDescription());
+
+        query.executeUpdate();
+        return (Short) query.getSingleResult();
+    }
+
+    @Override
+    @Transactional
+    public Short setAppealResultDescriptionFile(SetAppealResultDescriptionFileRequest request) {
+        StoredProcedureQuery query = entityManager
+                .createStoredProcedureQuery(SET_APPEAL_RESULT_DESCRIPTION_FILE_FUNCTION)
+                .registerStoredProcedureParameter(IN_ORIGINAL_QUESTION_ID_FIELD, Long.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_APPEAL_TYPE_ID_FIELD, Short.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_TEST_SERVER_ID_FIELD, Short.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_APPEAL_ID_FIELD, Integer.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_EXPERT_ID_FIELD, Integer.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(IN_APPEAL_RESULT_FILE_FIELD, Byte[].class, ParameterMode.IN)
+
+                .setParameter(IN_ORIGINAL_QUESTION_ID_FIELD, request.getOriginalQuestionId())
+                .setParameter(IN_APPEAL_TYPE_ID_FIELD, request.getAppealTypeId())
+                .setParameter(IN_TEST_SERVER_ID_FIELD, request.getTestServerId())
+                .setParameter(IN_APPEAL_ID_FIELD, request.getAppealId())
+                .setParameter(IN_EXPERT_ID_FIELD, request.getExpertId())
+                .setParameter(IN_APPEAL_RESULT_FILE_FIELD, request.getAppealResultFile());
 
         query.executeUpdate();
         return (Short) query.getSingleResult();

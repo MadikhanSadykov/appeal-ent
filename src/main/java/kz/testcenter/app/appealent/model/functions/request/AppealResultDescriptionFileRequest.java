@@ -33,4 +33,7 @@ public class AppealResultDescriptionFileRequest {
     @JsonProperty("in_expert_id")
     private Integer expertId;
 
+    @JsonProperty("log")
+    private WriteLogRequest writeLogRequest;
+
 }

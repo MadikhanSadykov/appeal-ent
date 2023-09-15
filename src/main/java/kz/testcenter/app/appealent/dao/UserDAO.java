@@ -1,6 +1,7 @@
 package kz.testcenter.app.appealent.dao;
 
 import kz.testcenter.app.appealent.model.functions.request.AuthUserRequest;
+import kz.testcenter.app.appealent.model.functions.request.UserChangePasswordRequest;
 import kz.testcenter.app.appealent.model.functions.response.AuthUserResponse;
 import kz.testcenter.app.appealent.model.functions.response.UserRestrictListResponse;
 
@@ -13,5 +14,7 @@ public interface UserDAO {
     AuthUserResponse authUser(AuthUserRequest authUserRequest);
 
     String getRoleNameByUserId(Integer userId);
+
+    Short userChangePassword(UserChangePasswordRequest userChangePasswordRequest);
 
 }
